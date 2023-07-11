@@ -9,7 +9,6 @@ if (isset($_SESSION['auth'])) // prevents showing login page while loggedd in
     exit(0);
 }
 
-
 include('includes/header.php');
 include('includes/navbar.php');
 ?>

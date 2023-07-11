@@ -61,7 +61,7 @@ if(isset($_POST['login_btn']))
       {
         $_SESSION['message'] = "Logged In Successfully";
         $_SESSION['message_code'] = "success";
-        header("Location:index.php"); // Homepage itself path
+        header("Location:includes/dashboard.php"); // Homepage itself path
         exit(0);    
       }
      }
@@ -81,4 +81,3 @@ else
     header("Location:login.php");  
     exit(0);
 }
-?>

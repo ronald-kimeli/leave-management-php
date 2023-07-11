@@ -6,6 +6,11 @@
 body
 {
     font-family: sans-serif;
+    background: #d8dce0 !important;
+}
+
+.card{
+    background: #fffefe !important;
 }
 
 /* ------Navbar section----- */
@@ -17,7 +22,8 @@ body
 }
 .navbar
 {
-    background-image: linear-gradient(to right,#a517ba, #5f1782,#fff2);
+    background: #7b8a99 !important;
+    /* background-image: linear-gradient(to right,#1c131d, #3e0d57) !important; */
     padding: 0 !important;
 }
 .navbar-brand img
@@ -71,7 +77,7 @@ body
 {
     font-size: 40px;
     font-weight: 600;
-    margin-top: 100px;
+    margin-top: 70px;
 }
 .play-btn
 {
@@ -148,7 +154,7 @@ body
 /* ----ABOUT US--- */
 #about-us
 {
-    background: #f8f9fa;
+    background: #d8dce0;
     padding-bottom: 50px;
     padding-top: 50px;
 
@@ -171,10 +177,12 @@ body
 /* ---Testimonials---- */
 #testimonials
 {
+
       margin: 50px 0;
 }
 .testimonials
 {
+    background: #c9caca;
     border-left: 4px solid #7b1798;
     margin-top: 50px;
     margin-bottom: 50px;
@@ -217,7 +225,7 @@ body
 /* -----------Footer section css------------ */
 #footer
 {
-    background-image: linear-gradient(to right,#a517ba, #5f1782) !important; 
+    background-image: linear-gradient(to right,#6b7b8b, #4b555f) !important; 
     color: #fff; 
 }
 .footer-img
@@ -261,6 +269,7 @@ body
     margin-top: 25px;
     background-image: linear-gradient(to right,#150218, #5f1782) !important;
 }
+
 hr
 {
     background-color: #fff;
