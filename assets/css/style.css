@@ -6,7 +6,7 @@
 body
 {
     font-family: sans-serif;
-    background: #d8dce0 !important;
+    background: #f0f1f1 !important;
 }
 
 .card{
@@ -285,5 +285,5 @@ hr
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
-    height: 600px;
+    height: auto;
 }

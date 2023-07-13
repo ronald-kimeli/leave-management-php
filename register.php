@@ -25,9 +25,6 @@ include('includes/navbar.php');
                         <h4>Register</h4>
                     </div>
                     <div class="card-body">
-
-
-
                         <form action="registercode.php" method="post">
                             <div class="form-group mb-3">
                                 <label>First Name</label>

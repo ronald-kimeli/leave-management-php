@@ -61,7 +61,7 @@ if(isset($_POST['login_btn']))
       {
         $_SESSION['message'] = "Logged In Successfully";
         $_SESSION['message_code'] = "success";
-        header("Location:includes/dashboard.php"); // Homepage itself path
+        header("Location:userDashboard.php"); // Homepage itself path
         exit(0);    
       }
      }

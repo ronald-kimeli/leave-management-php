@@ -7,14 +7,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.php">LOGIN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.php">REGISTER</a>
-                    </li>
-                </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mr-auto"><a href="login.php" class="btn btn-danger">Login</a></li>
+                        <li class="nav-item mr-auto"><a href="register.php" class="btn btn-success">Register</a></li>
+                    </ul>
             </div>
         </div>
     </nav>

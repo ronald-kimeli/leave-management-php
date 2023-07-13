@@ -1,21 +1,52 @@
 <?php
 session_start();
 include('includes/header.php');
-include('includes/navbar.php');
-
-
+// include('includes/navbar.php');
 ?>
 
-<div class="py-5">
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-2">
+<section id="nav-bar">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="assets/images/leave2-logo.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown dropstart">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="avatar avatar-online"><img style="height: 32px; width: 36px; border: 5px" src="assets/IMG_20200320_145521_697.png" alt="avatar" /></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <?= $_SESSION['auth_user']['user_name']  ?>
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-person-gear"></i> Profile</a></li>
+                                <li>
+                                    <form action="allcode.php" method="post">
+                                        <button class="dropdown-item" name="logout_btn" type="submit"> <i class="bi bi-power"></i> Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+    </nav>
+</section>
+
+<?php include('message.php'); ?>
+
+<section class="wrapper" id="wrapper">
+    <div class="container py-5" id="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
                 <?php include('message.php'); ?>
-                <div class="card">
-                    <div class="card-header bg-info">
-                        <center>
+                <div class="card shadow rounded">
+                    <div class="card-header">
                             <h4>Leave Application Status</h4>
-                        </center>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-striped">
@@ -128,7 +159,98 @@ include('includes/navbar.php');
                     </div>
                 </div>
             </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <?php include('message.php'); ?>
+                <div class="card shadow rounded">
+                    <div class="card-header">
+                            <h4>Leave Application Form</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="allcode.php" method="post">
 
-            <?php
-            include('includes/footer.php');
-            ?>
+                            <div class="mb-3 row visually-hidden">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Full Name:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="fullname" class="form-control" value="<?= $_SESSION['auth_user']['user_name']  ?>" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row visually-hidden">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Email:</label>
+                                <div class="col-sm-10">
+                                    <input type="email" name="email" class="form-control" value="<?= $_SESSION['auth_user']['user_email']  ?>" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row visually-hidden">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Gender:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="gender" class="form-control" value="<?= $_SESSION['auth_user']['user_gender']  ?>" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Leave Type:</label>
+                                <div class="col-sm-10">
+                                    <select name="leave_type" required class="form-control">
+                                        <option value="">--Select Leave_type--</option>
+                                        <?php
+                                        include('admin/config/dbcon.php');
+
+                                        $query = "select * from leave_type order by leave_type desc";
+                                        $query_run = mysqli_query($con, $query);
+                                        while ($row = mysqli_fetch_assoc($query_run)) {
+                                            echo "<option value=" . $row['leave_type'] . ">" . $row['leave_type'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row visually-hidden">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Department:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="department" class="form-control" value="<?= $_SESSION['auth_user']['user_department']  ?>" required readonly>
+                                </div>
+                            </div>
+                            <!-- Message input -->
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Description:</label>
+                                <div class="col-sm-10">
+                                    <textarea type="text" name="description" class="form-control" rows="3" placeholder="reason for the  applying this Leave,,," required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Leave From:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="leave_from" min=<?php echo date('Y-m-d'); ?> class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Leave To:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" name="leave_to" min=<?php echo date('Y-m-d'); ?> class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" name="apply_leave" class="btn btn-primary">Apply Now!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<?php
+include('includes/footer.php');
+?>
