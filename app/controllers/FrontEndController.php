@@ -260,19 +260,21 @@ class FrontEndController extends Controller
     private function sendemail_resetToken($email, $code)
     {
         try {
+            $config = require(__DIR__ . '/../../src/smtp_conf.php');
+            $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 
             $mail->isSMTP();
             $mail->SMTPAuth = true;
 
-            $mail->Host = "smtp.gmail.com";
-            $mail->Username = "leavemanagement254@gmail.com";
-            $mail->Password = "xjssirazbecywkjg ";
+            $mail->Host = $smtp['host'];
+            $mail->Username = $smtp['username'];
+            $mail->Password = $smtp['password'];
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom("leavemanagement254@gmail.com");
+            $mail->setFrom($smtp['from']);
             $mail->addAddress($email);
 
             //Content
@@ -300,20 +302,22 @@ class FrontEndController extends Controller
     private function sendemail_verify($fname, $lname, $email, $verify_token)
     {
         try {
+            $config = require(__DIR__ . '/../../src/smtp_conf.php');
+            $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 
             $mail->isSMTP();
             $mail->SMTPAuth = true;
 
-            $mail->Host = "smtp.gmail.com";
-            $mail->Username = "leavemanagement254@gmail.com"; //SMTP username
-            $mail->Password = "xjssirazbecywkjg"; // Alloweduser254
+            $mail->Host = $smtp['host'];
+            $mail->Username = $smtp['username'];
+            $mail->Password = $smtp['password'];
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom("leavemanagement254@gmail.com", $fname . ' ' . $lname);
+            $mail->setFrom($smtp['from'], $fname . ' ' . $lname);
             $mail->addAddress($email); //Add a recipient
 
             //Content

@@ -70,19 +70,19 @@ employee@gmail.com - password123
 <img width="auto" alt="Database Design" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/database_design.png">
 
 ### Home Page
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/home.png">
+<img width="auto" alt="Home Page" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/home.png">
 
 ### Login
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/login.png">
+<img width="auto" alt="Login" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/login.png">
 
 ### Admin Applied Leaves
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/applied_admin.png">
+<img width="auto" alt="Leaves" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/applied_admin.png">
 
 ### Employee Applied Leaves
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/employee_apply_leave.png">
+<img width="auto" alt="Leaves" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/employee_apply_leave.png">
 
 ### Mobile Responsive
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/mobile_responsive.png">
+<img width="auto" alt="Leaves" src="https://github.com/ronald-kimeli/leave-management-php/blob/latest_oop/public/images/mobile_responsive.png">
 
 
 
