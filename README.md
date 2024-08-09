@@ -1,5 +1,5 @@
 # Leave Management System 
-========
+
 This is Full-Stack web application build on top of  PHP, MySQL, jQuery, Bootstrap css. It consists of Home page, Admin Panel and Employee panel for management. It runs on pure php using OOP concepts to meeting MVC structure.
 
 ## set up
