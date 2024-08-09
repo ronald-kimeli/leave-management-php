@@ -1,5 +1,26 @@
 {
+    "name": "shimmerphp/shimmerphp",
+    "description": "Slim ShimmerPHP",
     "require": {
-        "phpmailer/phpmailer": "^6.6"
-    }
+        "php": "^8.2",
+        "phpmailer/phpmailer": "^6.6",
+        "fakerphp/faker": "^1.23"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.9"
+        },
+        "ignore-platform-reqs": true
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ronald Kimeli",
+            "email": "kimeliryans@gmail.com"
+        }
+    ]
 }

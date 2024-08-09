@@ -1,3 +1,8 @@
 Proctfile
 Vendor
 src/config.php
+src/database.php
+combined.php
+test.php
+tests.php
+composer.lock
