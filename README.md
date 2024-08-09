@@ -68,22 +68,22 @@ employee@gmail.com - password123
  * Managing their accounts 
 
 ### Database Design
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/database_design.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/database_design.png">
 
 ### Home Page
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/home.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/home.png">
 
 ### Login
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/login.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/login.png">
 
 ### Admin Applied Leaves
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/applied_admin.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/applied_admin.png">
 
 ### Employee Applied Leaves
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/employee_apply_leave.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/employee_apply_leave.png">
 
 ### Mobile Responsive
-<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/blob/main/public/images/mobile_responsive.png">
+<img width="auto" alt="Screenshot from 2024-06-11 00-27-58" src="https://github.com/ronald-kimeli/leave-management-system.great-site.net/public/images/mobile_responsive.png">
 
 
 
