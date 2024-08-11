@@ -47,7 +47,7 @@ class LeaveController extends Controller
 
                 if (method_exists($leave, 'applied_by')) {
                     $appliedBy = $leave->applied_by()->getAttributes();
-                    $data['applied_by'] =  [
+                    $data['applied_by'] = [
                         'first_name' => $appliedBy['first_name'],
                         'last_name' => $appliedBy['last_name'],
                     ];
@@ -83,7 +83,6 @@ class LeaveController extends Controller
 
         return View::render('admin.appliedleaves.edit', ['appliedleave' => $appliedLeave], $headerTitle, $message, $messageCode, 200);
     }
-
 
     public function show($id)
     {
@@ -138,7 +137,4 @@ class LeaveController extends Controller
             }
         }
     }
-
-  
-
 }

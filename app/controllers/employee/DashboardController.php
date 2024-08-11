@@ -26,7 +26,7 @@ class DashboardController extends Controller
             'leave_type' => $leave_type,
         ];
 
-        $headerTitle = 'Employee Dashboard';
+        $headerTitle = 'Dashboard';
         $message = isset($_SESSION['message']) ? $_SESSION['message'] : null;
         $messageCode = isset($_SESSION['message_code']) ? $_SESSION['message_code'] : null;
 

@@ -18,7 +18,7 @@ class EmployeeController extends Controller
             'user' => $user,
         ];
 
-        $headerTitle = 'Employee Profile';
+        $headerTitle = 'Profile';
         return View::render('employee.profile', $viewData,  $headerTitle, $message = null, $messageCode = null, 200);
     }
 
@@ -30,7 +30,7 @@ class EmployeeController extends Controller
             'department' => $department,
         ];
 
-        $headerTitle = 'Employee Department';
+        $headerTitle = 'Department';
         return View::render('employee.department', $viewData,  $headerTitle, $message = null, $messageCode = null, 200);
     }
 
@@ -44,7 +44,7 @@ class EmployeeController extends Controller
             'appliedleaves' => $appliedleaves,
         ];
 
-        $headerTitle = 'Employee Appliedleaves';
+        $headerTitle = 'Appliedleaves';
         if (isset($_SESSION['message']) && isset($_SESSION['message_code'])) {
             return View::render('employee.appliedleaves', $viewData,$headerTitle, $_SESSION['message'],  $_SESSION['message_code'], 200);
         }
@@ -60,7 +60,7 @@ class EmployeeController extends Controller
             'leaveTypes' => $leaveTypes,
         ];
 
-        $headerTitle = 'Employee Leave Types';
+        $headerTitle = 'Leave Types';
         return View::render('employee.leavetypes', $viewData, $headerTitle, null, null, 200);
     }
 
