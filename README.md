@@ -1,5 +1,5 @@
 # Leave Management System 
-This is Full-Stack web application build on top of  PHP, MySQL, jQuery, Bootstrap css. It consists of Home page, Admin Panel and Employee panel for management. It runs on pure php using OOP concepts to meeting MVC structure.
+A Full-Stack web application built on top of PHP(OOP), MySQL(PDO), jQuery and Bootstrap css. It consists of Home page, Admin Panel and Employee panel for management. It runs on MVC structure.
 
 ## set up
 
@@ -7,14 +7,41 @@ This is Full-Stack web application build on top of  PHP, MySQL, jQuery, Bootstra
 
 
 ```bash
-cp src/database_sample.php database.php
+cp src/database_sample.php src/database.php
+```
+
+Fill your db connection credentials 
+
+
+```bash
+        'servername' => DB username,
+        'database' => Database name,
+        'username' => 'DB username,
+        'password' => DB password,
+```
+
+
+! For SMTP for registering account and resetting password
+
+```bash
+cp src/database_sample.php src/smtp_conf.php
+```
+
+Fill your SMTP credentials 
+
+
+```bash
+        'host' => 'smtp.gma...',
+        'from' => 'smtpmail',
+        'username' => 'smtpmail',
+        'password' => 'smtp_password',
 ```
 
 * Install necessary dependencies and dump the classess for auto load.
 
 
 ```bash
-composer install && composer dump_autoload
+composer install && composer dump-autoload
 ```
 
 * Let's jumpstart db by migration and seed all together to create our tables and add dummy data.
@@ -30,7 +57,7 @@ php migration.php
 
 
 ```bash
-php migration.php
+php seed.php
 ```
 
 * Now Start the server at your favorite port using built in php cli - On your browser at the url `http://localhost:8088/`
