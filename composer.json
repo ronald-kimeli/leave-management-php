@@ -2,14 +2,11 @@
     "name": "shimmerphp/shimmerphp",
     "description": "Slim ShimmerPHP",
     "require": {
-        "php": "^8.2",
+        "php": "^8.0",
         "phpmailer/phpmailer": "^6.6",
         "fakerphp/faker": "^1.23"
     },
     "config": {
-        "platform": {
-            "php": "8.3.9"
-        },
         "ignore-platform-reqs": true
     },
     "autoload": {
