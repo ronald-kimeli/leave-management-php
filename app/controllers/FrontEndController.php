@@ -5,7 +5,6 @@ use app\Renderer;
 use app\models\User;
 use app\Responses\View;
 use app\models\Department;
-use PHPMailer\PHPMailer\SMTP;
 use app\controllers\Controller;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -98,8 +97,6 @@ class FrontEndController extends Controller
         }
     }
 
-
-
     public function processPasswordReset($request)
     {
         if (isset($request['reset_password'])) {
@@ -144,9 +141,6 @@ class FrontEndController extends Controller
             }
         }
     }
-
-
-
 
     public function register($request)
     {
@@ -244,8 +238,6 @@ class FrontEndController extends Controller
             return View::redirect('/login', "Method Not allowed", "success");
         }
     }
-
-
     public function forgotPassword()
     {
         $headerTitle = 'Forgot Password';
@@ -255,12 +247,10 @@ class FrontEndController extends Controller
 
         return View::render('frontend.forgotPassword', null, $headerTitle, $message = null, $messageCode = null, 200);
     }
-
-
     private function sendemail_resetToken($email, $code)
     {
         try {
-            $config = require(__DIR__ . '/../../src/smtp_conf.php');
+            $config = require (__DIR__ . '/../../src/smtp_conf.php');
             $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 
@@ -302,7 +292,7 @@ class FrontEndController extends Controller
     private function sendemail_verify($fname, $lname, $email, $verify_token)
     {
         try {
-            $config = require(__DIR__ . '/../../src/smtp_conf.php');
+            $config = require (__DIR__ . '/../../src/smtp_conf.php');
             $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 
