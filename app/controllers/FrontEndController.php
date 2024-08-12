@@ -250,7 +250,7 @@ class FrontEndController extends Controller
     private function sendemail_resetToken($email, $code)
     {
         try {
-            $config = require (__DIR__ . '/../../src/smtp_conf.php');
+            $config = require (__DIR__ . '/../../src/smtp.php');
             $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 
@@ -292,7 +292,7 @@ class FrontEndController extends Controller
     private function sendemail_verify($fname, $lname, $email, $verify_token)
     {
         try {
-            $config = require (__DIR__ . '/../../src/smtp_conf.php');
+            $config = require (__DIR__ . '/../../src/smtp.php');
             $smtp = $config['smtp'];
             $mail = new PHPMailer(true);
 

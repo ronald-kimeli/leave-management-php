@@ -24,7 +24,7 @@ Fill your db connection credentials
 ! For SMTP for registering account and resetting password
 
 ```bash
-cp src/database_sample.php src/smtp_conf.php
+cp src/smtp_sample.php src/smtp.php
 ```
 
 Fill your SMTP credentials 

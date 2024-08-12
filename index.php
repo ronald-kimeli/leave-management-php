@@ -12,11 +12,6 @@ use app\controllers\admin\DepartmentController;
 use app\controllers\employee\EmployeeController as EmployerController;
 use app\controllers\employee\DashboardController as EmployeeDashboardController;
 
-// Start the session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 // Public Routes
 Router::get('/', ['controller' => FrontEndController::class, 'method' => 'index']);
 Router::get('/register', ['controller' => FrontEndController::class, 'method' => 'registerForm']);
@@ -29,9 +24,6 @@ Router::get('/verify_email', ['controller' => FrontEndController::class, 'method
 Router::post('/reset_password', ['controller' => FrontEndController::class, 'method' => 'resetPassword']);
 Router::get('/reset_password', ['controller' => FrontEndController::class, 'method' => 'showResetPasswordForm']);
 Router::post('/new_password', ['controller' => FrontEndController::class, 'method' => 'processPasswordReset']);
-
-
-
 
 // Define routes using static methods in Router class
 Router::group('sessionAuth', function () {
