@@ -6,6 +6,7 @@ use app\database\Seeder;
 require_once 'vendor/autoload.php';
 
 $seeder = new Seeder();
+// $seeder->seedAll();
 $seeder->seedTable('departments');
 $seeder->seedTable('roles');
 $seeder->seedTable('leavetypes');

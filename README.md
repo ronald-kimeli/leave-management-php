@@ -16,7 +16,7 @@ Fill your db connection credentials
 ```bash
         'servername' => DB username,
         'database' => Database name,
-        'username' => 'DB username,
+        'username' => DB username,
         'password' => DB password,
 ```
 

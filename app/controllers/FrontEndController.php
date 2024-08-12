@@ -223,9 +223,9 @@ class FrontEndController extends Controller
                         // lets redirect to Admin or normal user
                         if ($_SESSION['auth_role'] == "admin") // admin
                         {
-                            return View::redirect('/admin/dashboard', "Welcome to admin dashboard", "success");
-                        } elseif ($_SESSION['auth_role'] == "user") {
-                            return View::redirect('/user/dashboard', "Welcome to user dashboard", "success", 302);
+                            return View::redirect('/admin/dashboard', "Welcome to admin dashboard", "success", 302);
+                        } elseif ($_SESSION['auth_role'] == "employee") {
+                            return View::redirect('/employee/dashboard', "Welcome to employee dashboard", "success", 302);
                         } else {
                             return View::redirect('/login', "Unauthorized! contact the administrator", "error", 302);
                         }

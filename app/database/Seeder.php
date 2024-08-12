@@ -192,47 +192,47 @@ class Seeder
     {
         // Define a list of leave types with their descriptions
         $leaveTypes = [
-            ['name' => 'Maternity Leave', 'description' => 'Leave taken around the birth of a child, either before or after.'],
-            ['name' => 'Paternity Leave', 'description' => 'Leave taken by a father or partner around the time of the birth of a child.'],
-            ['name' => 'Sick Leave', 'description' => 'Leave taken when an employee is ill, for a day, weeks, or longer.'],
-            ['name' => 'Annual Leave', 'description' => 'Leave taken for vacation or personal time off from work.'],
-            ['name' => 'Unpaid Leave', 'description' => 'Leave taken without pay when other leave types are exhausted.'],
-            ['name' => 'Bereavement Leave', 'description' => 'Leave taken due to the death of a close family member.'],
-            ['name' => 'Sabbatical Leave', 'description' => 'Extended leave to pursue personal projects or rest, typically after a long service.'],
-            ['name' => 'Parental Leave', 'description' => 'Leave taken by parents to care for a newborn or newly adopted child.'],
-            ['name' => 'Family Care Leave', 'description' => 'Leave taken to care for a sick family member.'],
-            ['name' => 'Study Leave', 'description' => 'Leave taken to pursue further education or professional development.'],
-            ['name' => 'Health Leave', 'description' => 'Leave taken for health-related issues, including treatment and recovery.'],
-            ['name' => 'Volunteer Leave', 'description' => 'Leave taken to participate in volunteer activities.'],
-            ['name' => 'Public Holiday Leave', 'description' => 'Leave on official public holidays.'],
-            ['name' => 'Jury Duty Leave', 'description' => 'Leave taken to fulfill jury duty obligations.'],
-            ['name' => 'Religious Leave', 'description' => 'Leave taken to observe religious holidays or practices.'],
-            ['name' => 'Election Leave', 'description' => 'Leave taken to vote or serve as an election official.'],
-            ['name' => 'Civic Duty Leave', 'description' => 'Leave taken to fulfill civic responsibilities, such as local government duties.'],
-            ['name' => 'Compassionate Leave', 'description' => 'Leave taken to manage a serious personal or family crisis.'],
-            ['name' => 'Short-Term Disability Leave', 'description' => 'Leave taken for short-term medical conditions that prevent work.'],
-            ['name' => 'Long-Term Disability Leave', 'description' => 'Extended leave for long-term medical conditions or disabilities.']
+            ['name' => 'Maternity', 'description' => 'Leave taken around the birth of a child, either before or after.'],
+            ['name' => 'Paternity', 'description' => 'Leave taken by a father or partner around the time of the birth of a child.'],
+            ['name' => 'Sick', 'description' => 'Leave taken when an employee is ill, for a day, weeks, or longer.'],
+            ['name' => 'Annual', 'description' => 'Leave taken for vacation or personal time off from work.'],
+            ['name' => 'Unpaid', 'description' => 'Leave taken without pay when other leave types are exhausted.'],
+            ['name' => 'Bereavement', 'description' => 'Leave taken due to the death of a close family member.'],
+            ['name' => 'Sabbatical', 'description' => 'Extended leave to pursue personal projects or rest, typically after a long service.'],
+            ['name' => 'Parental', 'description' => 'Leave taken by parents to care for a newborn or newly adopted child.'],
+            ['name' => 'Family Care', 'description' => 'Leave taken to care for a sick family member.'],
+            ['name' => 'Study', 'description' => 'Leave taken to pursue further education or professional development.'],
+            ['name' => 'Health', 'description' => 'Leave taken for health-related issues, including treatment and recovery.'],
+            ['name' => 'Volunteer', 'description' => 'Leave taken to participate in volunteer activities.'],
+            ['name' => 'Public Holiday', 'description' => 'Leave on official public holidays.'],
+            ['name' => 'Jury Duty', 'description' => 'Leave taken to fulfill jury duty obligations.'],
+            ['name' => 'Religious', 'description' => 'Leave taken to observe religious holidays or practices.'],
+            ['name' => 'Election', 'description' => 'Leave taken to vote or serve as an election official.'],
+            ['name' => 'Civic Duty', 'description' => 'Leave taken to fulfill civic responsibilities, such as local government duties.'],
+            ['name' => 'Compassionate', 'description' => 'Leave taken to manage a serious personal or family crisis.'],
+            ['name' => 'Short-Term Disability', 'description' => 'Leave taken for short-term medical conditions that prevent work.'],
+            ['name' => 'Long-Term Disability', 'description' => 'Extended leave for long-term medical conditions or disabilities.']
         ];
-    
+
         // Limit the number of records to the count specified or the number available, whichever is smaller
         $leaveTypesToSeed = array_slice($leaveTypes, 0, $count);
-    
+
         foreach ($leaveTypesToSeed as $leaveType) {
             $name = $leaveType['name'];
             $description = $leaveType['description'];
             $minimum_period = rand(1, 30); // Assuming a random minimum period between 1 and 30 days
-    
+
             // Prepare the SQL statement with placeholders
             $sql = "INSERT INTO leavetypes (name, description, minimum_period) VALUES (?, ?, ?)";
             $stmt = $this->db->getConnection()->prepare($sql);
-    
+
             // Bind and execute the parameters, preventing SQL injection
             $stmt->execute([$name, $description, $minimum_period]);
         }
-    
+
         echo "Leave types seeded successfully.\n";
     }
-    
+
 
     public function seedAppliedLeaves($count = 20)
     {
@@ -260,9 +260,9 @@ class Seeder
 
     public function seedAll()
     {
-        $this->seedUsers();
         $this->seedDepartments();
         $this->seedRoles();
+        $this->seedUsers();
         $this->seedLeaveTypes();
         $this->seedAppliedLeaves();
         // Seed other tables similarly...
