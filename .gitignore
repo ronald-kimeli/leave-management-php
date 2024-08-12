@@ -1,6 +1,6 @@
 Proctfile
 Vendor
-src/smtp_conf.php
+src/smtp.php
 src/database.php
 combined.php
 test.php
