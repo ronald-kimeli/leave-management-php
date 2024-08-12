@@ -43,10 +43,6 @@ class DashboardController extends Controller
         //     return $data;
         // }, $employees);
 
-
-        // echo '<pre>';
-        // var_dump($employees); die();
-
         $employees = User::model()->count();
 
         $departments = Department::model()->count();

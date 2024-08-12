@@ -1,7 +1,7 @@
 <?php
+
 namespace app\controllers;
 
-use app\Renderer;
 use app\models\User;
 use app\Responses\View;
 use app\models\Department;
@@ -171,7 +171,6 @@ class FrontEndController extends Controller
                 }
             } else {
                 return View::redirect('/register', "Password and Confirm Password does not match", "error", 302);
-
             }
         }
     }
@@ -272,12 +271,12 @@ class FrontEndController extends Controller
             $mail->Subject = "Password reset from Leave_Management System";
 
             $mail_template = "
-  <h2> Reset the password using the link</h2>
-  <h5> Ensure to reset password before the link expire</h5>
-  <br/><br/>
- 
-  <a href='http://localhost:8000/reset_password?code=$code'>Click me</a>
-  ";
+                            <h2> Reset the password using the link</h2>
+                            <h5> Ensure to reset password before the link expire</h5>
+                            <br/><br/>
+                            
+                            <a href='http://localhost:8000/reset_password?code=$code'>Click me</a>
+                            ";
 
             $mail->Body = $mail_template;
             $mail->send();

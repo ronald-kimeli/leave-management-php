@@ -47,25 +47,8 @@ class Controller
     {
         // Get messages to be displayed in the view
         $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
-        unset($_SESSION['messages']); // Clear messages after fetching
+        unset($_SESSION['messages']);
         return $messages;
     }
 
 }
-
-
-// public function someAction()
-// {
-//     // Check if user is logged in
-//     if ($this->isLoggedIn()) {
-//         // User is logged in
-//     } else {
-//         // User is not logged in
-//     }
-
-//     // Add a success message
-//     $this->addMessage('success', 'User registered successfully.');
-
-//     // Get messages to display in the view
-//     $messages = $this->getMessages();
-// }
