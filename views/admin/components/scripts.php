@@ -8,7 +8,6 @@
 <script src="/views/assets/js/PaginationTable.js"></script>
 <script src="/views/assets/js/app.js"></script>
 <script src="/views/assets/js/main.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 </body>
 
 </html>
