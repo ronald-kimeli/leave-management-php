@@ -20,7 +20,7 @@ class Seeder
         if (empty($response) || strtolower($response) === 'yes' || strtolower($response) === 'y') {
             $this->seed($tableName);
         } else {
-            echo "Seeding for table '$tableName' skipped.\n";
+            echo "Seeding for table '$tableName' skipped.";
         }
     }
 
@@ -43,11 +43,12 @@ class Seeder
                 $this->seedAppliedLeaves();
                 break;
             default:
-                echo "No seeding defined for table '$tableName'.\n";
+                echo "No seeding defined for table '$tableName'.";
         }
     }
     public function seedUsers($count = 20)
     {
+        $startTime = microtime(as_float: true);
         $faker = FakerFactory::create();
 
         // Custom user data
@@ -88,12 +89,14 @@ class Seeder
             $stmt->execute([$first_name, $last_name, $gender, $department_id, $email, $password, $verify_token, $verify_status, $role_id, $status, $reset_token, $reset_token_expiration]);
         }
 
-        echo "Users seeded successfully.\n";
+        $duration = round(microtime(true) - $startTime);
+        echo "\033[1;32mUsers seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
 
 
     public function seedDepartments($count = 20)
     {
+        $startTime = microtime(as_float: true);
         $faker = FakerFactory::create();
 
         // Array of real department names
@@ -135,12 +138,14 @@ class Seeder
             $stmt->execute([$name, $description]);
         }
 
-        echo "Departments seeded successfully.\n";
+        $duration = round(microtime(true) - $startTime);
+        echo "\033[1;32mDepartments seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
 
 
     public function seedRoles($count = 20)
     {
+        $startTime = microtime(as_float: true);
         $faker = FakerFactory::create();
 
         // Array to hold custom roles
@@ -185,11 +190,15 @@ class Seeder
             $stmt->execute([$name, $description, $permissions]);
         }
 
-        echo "Roles seeded successfully.\n";
+        $duration = round(microtime(true) - $startTime);
+        echo "\033[1;32mRoles seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
 
     public function seedLeaveTypes($count = 20)
     {
+
+        $startTime = microtime(as_float: true);
+
         // Define a list of leave types with their descriptions
         $leaveTypes = [
             ['name' => 'Maternity', 'description' => 'Leave taken around the birth of a child, either before or after.'],
@@ -230,30 +239,34 @@ class Seeder
             $stmt->execute([$name, $description, $minimum_period]);
         }
 
-        echo "Leave types seeded successfully.\n";
+        $duration = round(microtime(true) - $startTime);
+        echo "\033[1;32mLeave types seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
 
 
     public function seedAppliedLeaves($count = 20)
     {
+        $startTime = microtime(as_float: true);
         $faker = FakerFactory::create();
-
+    
         for ($i = 0; $i < $count; $i++) {
-            $applied_by = $faker->numberBetween(1, 10); // Assuming users already seeded
-            $leavetype_id = $faker->numberBetween(1, 10); // Assuming leavetypes already seeded
+            $applied_by = $faker->numberBetween(1, 10);
+            $leavetype_id = $faker->numberBetween(1, 10);
             $description = $faker->sentence;
             $from_date = $faker->dateTimeBetween('-1 month', '+1 month')->format('Y-m-d');
             $to_date = $faker->dateTimeBetween($from_date, '+1 month')->format('Y-m-d');
             $status = $faker->randomElement(['pending', 'accepted', 'rejected']);
             $remaining_days = $status ? $faker->numberBetween(1, 10) : null;
-
-            $sql = "INSERT INTO appliedleaves (applied_by,leavetype_id, description, from_date, to_date, status, remaining_days) VALUES (?, ?, ?, ?, ?, ?,?)";
+    
+            $sql = "INSERT INTO appliedleaves (applied_by, leavetype_id, description, from_date, to_date, status, remaining_days) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->getConnection()->prepare($sql);
             $stmt->execute([$applied_by, $leavetype_id, $description, $from_date, $to_date, $status, $remaining_days]);
         }
-
-        echo "Applied leaves seeded successfully.\n";
+    
+        $duration = round(microtime(true) - $startTime);
+        echo "\033[1;32mApplied leaves seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
+    
 
 
     // Similar methods for seeding roles, leavetypes, and appliedleaves...
