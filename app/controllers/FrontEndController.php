@@ -303,14 +303,12 @@ class FrontEndController extends Controller
             $mail->Password = $smtp['password'];
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port = 587; 
 
-            //Recipients
             $mail->setFrom($smtp['from'], $fname . ' ' . $lname);
-            $mail->addAddress($email); //Add a recipient
+            $mail->addAddress($email); 
 
-            //Content
-            $mail->isHTML(true); //Set email format to HTML
+            $mail->isHTML(true);
             $mail->Subject = "Account Verification from Leave Management System";
             $mail_template = "
             <!DOCTYPE html>

@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class Router
+class Route
 {
     protected static $routes = [
         'GET' => [],
@@ -25,7 +25,6 @@ class Router
         self::$routes['POST'][$path] = $handler;
         return new static();
     }
-
 
     public static function put(string $path, array $handler)
     {

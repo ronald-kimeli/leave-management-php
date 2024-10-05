@@ -7,3 +7,4 @@ test.php
 tests.php
 composer.lock
 vendor
+global.php
