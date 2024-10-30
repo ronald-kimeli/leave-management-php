@@ -266,11 +266,8 @@ class Seeder
         $duration = round(microtime(true) - $startTime);
         echo "\033[1;32mApplied leaves seeded successfully! -----> {$duration}s\033[0m\n\n";
     }
-    
-
 
     // Similar methods for seeding roles, leavetypes, and appliedleaves...
-
     public function seedAll()
     {
         $this->seedDepartments();

@@ -35,12 +35,13 @@
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
                                             <input type="checkbox" class="custom-control-input" id="customCheck">
-                                            <label class="custom-control-label" for="customCheck">Remember
-                                                Me</label>
+                                            <label class="custom-control-label" for="customCheck">
+                                                Remember Me
+                                            </label>
                                         </div>
                                     </div>
-                                    <input type="submit" name="login_btn" value="Login" class="btn btn-primary btn-user btn-block"/>
-                                        
+                                    <input type="submit" name="login_btn" value="Login"
+                                        class="btn btn-primary btn-user btn-block" />
                                     <hr>
                                     <a href="#" class="btn btn-google btn-user btn-block">
                                         <i class="fab fa-google fa-fw"></i> Login with Google
@@ -54,8 +55,9 @@
                                     <a class="small" href="/forgot/password">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="/register">Don't have an account? Sign
-                                        up</a>
+                                    <a class="small" href="/register">
+                                        Don't have an account? Sign up
+                                    </a>
                                 </div>
                             </div>
                         </div>

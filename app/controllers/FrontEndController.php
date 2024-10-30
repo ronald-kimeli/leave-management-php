@@ -217,6 +217,7 @@ class FrontEndController extends Controller
                             'user_email' => $data->email,
                             'user_name' => $data->first_name . ' ' . $data->last_name,
                         ];
+                        
                         $_SESSION['session_start_time'] = time();
 
                         // lets redirect to Admin or normal user

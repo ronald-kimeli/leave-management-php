@@ -27,8 +27,7 @@ class User extends BaseModel
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-
-        /**
+    /**
      * Paginate applied leaves and eager load related models (User and Department).
      *
      * @param int $itemsPerPage Number of items per page

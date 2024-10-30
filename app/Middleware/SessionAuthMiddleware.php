@@ -12,18 +12,15 @@ class SessionAuthMiddleware
         }
     }
 
-    // Method to destroy the session and clear session data
     public function destroySession()
     {
-        // Destroy session
         session_destroy();
     }
 
-    // Method to handle authentication and session timeout
     public function handle($request_uri)
     {
         // Define protected routes
-        $protectedRoutes = ['/admin', '/employee']; // Example protected routes
+        $protectedRoutes = ['/admin', '/employee'];
 
         // Check if user is authenticated
         if (!isset($_SESSION["auth"]) && !in_array($request_uri, $protectedRoutes)) {

@@ -21,7 +21,7 @@ class BaseModel
 
     public function __construct()
     {
-        $this->db = new Database(); 
+        $this->db = new Database();
     }
 
     public static function model()
@@ -65,39 +65,39 @@ class BaseModel
         try {
             // Filter out guarded fields
             $fillableData = array_diff_key($data, array_flip($this->guarded));
-            
+
             // Prepare SQL statement
             $columns = implode(',', array_keys($fillableData));
             $values = implode(',', array_fill(0, count($fillableData), '?'));
             $stmt = $this->db->getConnection()->prepare("INSERT INTO {$this->tableName} ({$columns}) VALUES ({$values})");
-            
+
             // Execute statement
             $stmt->execute(array_values($fillableData));
-            
+
             // Get last insert ID
             $lastInsertId = $this->db->getConnection()->lastInsertId();
-            
+
             // Return newly created instance
             $newInstance = $this->find($lastInsertId);
-    
+
             // Determine singular name for the table
             $singularName = $this->getSingularTableName();
-    
+
             return [
                 'status' => 'success',
                 'message' => "{$singularName} created successfully.",
                 'data' => $newInstance
             ];
-            
+
         } catch (\PDOException $e) {
             // Log error
             error_log('PDOException: ' . $e->getMessage());
-    
+
             // Determine specific error type
             $errorCode = $e->getCode();
             $errorMessage = $e->getMessage();
             $message = 'An error occurred while creating the record.';
-    
+
             switch ($errorCode) {
                 case '23000': // Integrity constraint violation (e.g., duplicate entry)
                     if (strpos($errorMessage, 'Duplicate entry') !== false) {
@@ -113,7 +113,7 @@ class BaseModel
                         $message = 'Integrity constraint violation.';
                     }
                     break;
-    
+
                 case '42S22': // Unknown column
                     if (preg_match('/Unknown column \'(.*?)\' in \'field list\'/', $errorMessage, $matches)) {
                         $unknownColumn = $matches[1];
@@ -122,28 +122,28 @@ class BaseModel
                         $message = 'Unknown column in the field list.';
                     }
                     break;
-    
+
                 default:
                     $message = 'An error occurred while creating the record.';
                     break;
             }
-    
+
             return [
                 'status' => 'error',
                 'message' => $message
             ];
-            
+
         } catch (\Exception $e) {
             // Log error
             error_log('Exception: ' . $e->getMessage());
-    
+
             return [
                 'status' => 'error',
                 'message' => 'An unexpected error occurred.'
             ];
         }
     }
-    
+
     /**
      * Get the singular name of the table.
      * This is a placeholder method. You may need to adjust it based on your implementation.
@@ -153,7 +153,7 @@ class BaseModel
         // Example: convert table name 'departments' to 'Department'
         return ucfirst(strtolower($this->tableName)); // Adjust if you have specific rules for singularization
     }
-    
+
 
 
     public function save()
@@ -165,37 +165,104 @@ class BaseModel
         }
     }
 
-    public function update()
+    public function update(array $data = null)
     {
         if (!isset($this->attributes['id']) || !$this->attributes['id']) {
             throw new \Exception('Cannot update record without an ID.');
         }
 
-        $fillableData = array_diff_key($this->attributes, array_flip($this->guarded));
+        $dataToUpdate = $data ?? $this->attributes;
+        $fillableData = array_diff_key($dataToUpdate, array_flip($this->guarded));
+
+        // Check for uniqueness violation only if the value has changed
+        foreach ($fillableData as $column => $value) {
+            if ($this->isUniqueConstraintViolated($column, $value)) {
+                throw new \Exception("The value for '{$column}' must be unique.");
+            }
+        }
+
         $set = [];
         foreach ($fillableData as $column => $value) {
             $set[] = "{$column} = ?";
         }
         $set = implode(',', $set);
+
         $stmt = $this->db->getConnection()->prepare("UPDATE {$this->tableName} SET {$set} WHERE id = ?");
-        $stmt->execute(array_merge(array_values($fillableData), [$this->attributes['id']]));
-        return $stmt->rowCount();
+        if (!$stmt->execute(array_merge(array_values($fillableData), [$this->attributes['id']]))) {
+            error_log('Update failed: ' . implode(', ', $stmt->errorInfo()));
+            return false;
+        }
+
+        // Refresh the attributes after update
+        $this->attributes = array_merge($this->attributes, $fillableData);
+        return true;
     }
+
+    private function isUniqueConstraintViolated($column, $value)
+    {
+        // Skip uniqueness check if the value is unchanged
+        if ($this->attributes[$column] === $value) {
+            return false;
+        }
+
+        // Check if the new value already exists in the database
+        $stmt = $this->db->getConnection()->prepare("SELECT COUNT(*) FROM {$this->tableName} WHERE {$column} = ? AND id != ?");
+        $stmt->execute([$value, $this->attributes['id']]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    // public function update()
+    // {
+    //     if (!isset($this->attributes['id']) || !$this->attributes['id']) {
+    //         throw new \Exception('Cannot update record without an ID.');
+    //     }
+
+    //     $fillableData = array_diff_key($this->attributes, array_flip($this->guarded));
+    //     $set = [];
+    //     foreach ($fillableData as $column => $value) {
+    //         $set[] = "{$column} = ?";
+    //     }
+    //     $set = implode(',', $set);
+    //     $stmt = $this->db->getConnection()->prepare("UPDATE {$this->tableName} SET {$set} WHERE id = ?");
+    //     $stmt->execute(array_merge(array_values($fillableData), [$this->attributes['id']]));
+    //     return $stmt->rowCount();
+    // }
+
+    // public function delete()
+    // {
+    //     if (!isset($this->attributes['id']) || !$this->attributes['id']) {
+    //         throw new \Exception('Cannot delete record without an ID.');
+    //     }
+
+    //     // Cascade delete related models
+    //     foreach ($this->getCascadingRelations() as $relation) {
+    //         $relatedModels = $this->$relation();
+    //         foreach ($relatedModels as $relatedModel) {
+    //             $relatedModel->delete(); // Assuming related model also has a delete method
+    //         } 
+    //     }
+
+    //     $stmt = $this->db->getConnection()->prepare("DELETE FROM {$this->tableName} WHERE id = ?");
+    //     $stmt->execute([$this->attributes['id']]);
+    //     return $stmt->rowCount();
+    // }
 
     public function delete()
     {
+    
         if (!isset($this->attributes['id']) || !$this->attributes['id']) {
             throw new \Exception('Cannot delete record without an ID.');
         }
 
         // Cascade delete related models
         foreach ($this->getCascadingRelations() as $relation) {
-            $relatedModels = $this->$relation();
+            $relatedModels = $this->$relation(); // Call the relation method
             foreach ($relatedModels as $relatedModel) {
                 $relatedModel->delete(); // Assuming related model also has a delete method
-            } 
+            }
         }
 
+        // Proceed to delete the main record
         $stmt = $this->db->getConnection()->prepare("DELETE FROM {$this->tableName} WHERE id = ?");
         $stmt->execute([$this->attributes['id']]);
         return $stmt->rowCount();
@@ -341,7 +408,7 @@ class BaseModel
     }
 
 
-        /**
+    /**
      * Adds a WHERE IN clause to the query.
      *
      * @param string $column The column to check against.
