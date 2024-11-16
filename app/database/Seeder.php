@@ -278,3 +278,4 @@ class Seeder
         // Seed other tables similarly...
     }
 }
+

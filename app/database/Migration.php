@@ -102,9 +102,6 @@ class Migration
         }
     }
     
-    
-    
-
     public function generateConstraintName($tableName, $columnName)
     {
         return "fk_$columnName" . "_" . $tableName;

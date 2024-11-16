@@ -12,24 +12,17 @@ class DepartmentController extends Controller
 
     public function index()
     {
-        $departments = Department::model()->all();
-        $viewData = [
-            'departments' => $departments,
-        ];
-
         $headerTitle = 'Departments';
         $message = isset($_SESSION['message']) ? $_SESSION['message'] : null;
         $messageCode = isset($_SESSION['message_code']) ? $_SESSION['message_code'] : null;
 
-        return View::render('admin.departments.index', $viewData, $headerTitle, $message, $messageCode, 200);
+        return View::render('admin.departments.index', null, $headerTitle, $message, $messageCode, 200);
     }
-
-
 
     public function getDepartments()
     {
         try {
-            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 5;
+            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 10;
 
             if (!empty($_GET['search'])) {
                 $query = Department::model()->whereLike(['name' => $_GET['search']])->paginate($itemsPerPage);

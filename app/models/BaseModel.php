@@ -211,42 +211,6 @@ class BaseModel
         return $stmt->fetchColumn() > 0;
     }
 
-    // public function update()
-    // {
-    //     if (!isset($this->attributes['id']) || !$this->attributes['id']) {
-    //         throw new \Exception('Cannot update record without an ID.');
-    //     }
-
-    //     $fillableData = array_diff_key($this->attributes, array_flip($this->guarded));
-    //     $set = [];
-    //     foreach ($fillableData as $column => $value) {
-    //         $set[] = "{$column} = ?";
-    //     }
-    //     $set = implode(',', $set);
-    //     $stmt = $this->db->getConnection()->prepare("UPDATE {$this->tableName} SET {$set} WHERE id = ?");
-    //     $stmt->execute(array_merge(array_values($fillableData), [$this->attributes['id']]));
-    //     return $stmt->rowCount();
-    // }
-
-    // public function delete()
-    // {
-    //     if (!isset($this->attributes['id']) || !$this->attributes['id']) {
-    //         throw new \Exception('Cannot delete record without an ID.');
-    //     }
-
-    //     // Cascade delete related models
-    //     foreach ($this->getCascadingRelations() as $relation) {
-    //         $relatedModels = $this->$relation();
-    //         foreach ($relatedModels as $relatedModel) {
-    //             $relatedModel->delete(); // Assuming related model also has a delete method
-    //         } 
-    //     }
-
-    //     $stmt = $this->db->getConnection()->prepare("DELETE FROM {$this->tableName} WHERE id = ?");
-    //     $stmt->execute([$this->attributes['id']]);
-    //     return $stmt->rowCount();
-    // }
-
     public function delete()
     {
     

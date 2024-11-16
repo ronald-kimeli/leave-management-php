@@ -19,7 +19,7 @@ class LeaveTypeController extends Controller
     public function leavetypes()
     {
         try {
-            $perPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 5;
+            $perPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 10;
             if (isset($_GET['search']) && $_GET['search'] === '') {
                 $query = LeaveType::model()->paginate($perPage);
             } else {

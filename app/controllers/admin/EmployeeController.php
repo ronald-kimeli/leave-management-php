@@ -22,7 +22,7 @@ class EmployeeController extends Controller
     public function employees()
     {
         try {
-            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 5;
+            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 10;
 
             if (isset($_GET['search']) && $_GET['search'] === '') {
                 $query = User::model()->paginate($itemsPerPage);
@@ -70,6 +70,7 @@ class EmployeeController extends Controller
     }
     public function createEmployeeForm()
     {
+      
         $departments = Department::model()->all();
         $roles = Role::model()->all();
 

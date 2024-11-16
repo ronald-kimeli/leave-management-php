@@ -46,7 +46,7 @@ $departments = $data ? $data->departments : 0;
   </div>
 
   <!-- Charts Section -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-xl-3 col-md-6">
       <div class="card mb-4 ">
         <div class="card-header">Leave Types Distribution</div>
@@ -63,11 +63,11 @@ $departments = $data ? $data->departments : 0;
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   var ctxLeaveTypes = document.getElementById('leaveTypesChart').getContext('2d');
   var leaveTypesChart = new Chart(ctxLeaveTypes, {
@@ -150,6 +150,6 @@ $departments = $data ? $data->departments : 0;
       }
     }
   });
-</script>
+</script> -->
 
 <?php require __DIR__ . "/components/footer.php"; ?>

@@ -21,7 +21,7 @@ class LeaveController extends Controller
     public function appliedLeaves()
     {
         try {
-            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 5;
+            $itemsPerPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 10;
             if (isset($_GET['search']) && $_GET['search'] === '') {
                 $query = AppliedLeave::model()->paginate($itemsPerPage);
             } else {
