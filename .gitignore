@@ -8,3 +8,5 @@ tests.php
 composer.lock
 vendor
 global.php
+.idea/
+

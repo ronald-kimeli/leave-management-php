@@ -65,6 +65,29 @@ function defineTableSchemas($tableName, Migration $migration)
                 $table->integer('remaining_days')->nullable()->comments("Time remaining after acceptance");
                 $table->timestamps();
             });
+
+//            $migration->executeTable('appliedleaves', function ($table) {
+//                $table->increments('id');
+//                $table->foreign('applied_by')
+//                    ->references('users', 'id')
+//                    ->cascade('RESTRICT')  // Ensure deletion is restricted if parent has children
+//                    ->onDelete()
+//                    ->comments("Foreign key to users table");
+//
+//                $table->foreign('leavetype_id')
+//                    ->references('leavetypes', 'id')
+//                    ->cascade('CASCADE')  // Cascade delete if leave type is deleted
+//                    ->onDelete()
+//                    ->comments("Foreign key to leavetypes table");
+//
+//                $table->string('description')->nullable()->comments("Leave description");
+//                $table->date('from_date')->required()->unique()->comments("Start date of leave");
+//                $table->date('to_date')->required()->unique()->comments("End date of leave");
+//                $table->string('status')->required()->default('pending')->comments("Leave status");
+//                $table->integer('remaining_days')->nullable()->comments("Time remaining after acceptance");
+//                $table->timestamps();
+//            });
+
             break;
         default:
             echo "No migration defined for table '$tableName'.\n";

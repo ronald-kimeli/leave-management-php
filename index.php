@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-
 use app\models\Route;
 use app\controllers\FrontEndController;
 use app\Middleware\SessionAuthMiddleware;
