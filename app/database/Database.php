@@ -13,7 +13,7 @@ class Database {
     public function __construct() {
         // Load database configuration
         $this->config = require(__DIR__ . '/../../src/database.php');
-        
+
         // Attempt to initialize the connection
         $this->initializeConnection();
     }
@@ -32,16 +32,16 @@ class Database {
             try {
                 // Attempt to establish the connection
                 $this->conn = new PDO($dsn, $databaseConfig['username'], $databaseConfig['password'], $options);
-                
+
                 // Check and create the database if it doesn't exist
                 $this->createDatabaseIfNotExists($databaseConfig['database']);
 
                 // Rebuild the DSN to include the database name
                 $dsn = "mysql:host={$databaseConfig['servername']};dbname={$databaseConfig['database']};charset=utf8mb4";
-                
+
                 // Reconnect with the correct database
                 $this->conn = new PDO($dsn, $databaseConfig['username'], $databaseConfig['password'], $options);
-                
+
                 return; // Connection successful, exit the retry loop
             } catch (PDOException $e) {
                 if ($attempt < $this->maxRetries - 1 && $e->getCode() == '08004') {
@@ -73,12 +73,12 @@ class Database {
 
     private function createDatabaseIfNotExists($databaseName) {
         $sql = "CREATE DATABASE IF NOT EXISTS $databaseName";
-        
+
         try {
             // Check if the database already exists
             $stmt = $this->conn->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$databaseName'");
             $databaseExists = $stmt->fetchColumn();
-        
+
             if (!$databaseExists) {
                 // Prompt the user to create the database
                 $response = readline("Database '$databaseName' does not exist. Do you want to create it? (yes/no): ");

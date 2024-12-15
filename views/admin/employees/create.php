@@ -104,5 +104,4 @@ $roles = $data ? $data->roles : null;
 </div>
 
 <?php
-
 require __DIR__ . "/../components/footer.php";

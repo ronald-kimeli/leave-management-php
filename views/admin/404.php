@@ -19,6 +19,6 @@
     </div>
   </div>
 </div>
-<?php
 
+<?php
 require __DIR__ . "/components/footer.php";

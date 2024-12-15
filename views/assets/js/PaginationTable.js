@@ -10,14 +10,17 @@ var PaginationTable = (function () {
         tableColumns = columnsParam;
         actions = actionsParam;
 
+        // Clear any previous modal backdrops and hide modals on load
+        clearModalsAndBackdrops();
+
         // Load saved state
         var savedPage = localStorage.getItem('currentPage');
         var savedSearchQuery = localStorage.getItem('searchQuery');
-        
+
         if (savedPage) {
             currentPage = parseInt(savedPage, 10);
         }
-        
+
         if (savedSearchQuery) {
             $('#searchInput').val(savedSearchQuery);
         }
@@ -26,9 +29,28 @@ var PaginationTable = (function () {
         setupEventHandlers();
     }
 
+    // Clears modal backdrop and hides modals when the page loads
+    function clearModalsAndBackdrops() {
+        // Remove all modal backdrops with the class 'modal-backdrop fade show'
+        var modalBackdrops = document.querySelectorAll('.modal-backdrop.fade.show');
+        modalBackdrops.forEach(function(backdrop) {
+            backdrop.remove();
+        });
+
+        // Hide all modals (close them if they're open)
+        document.addEventListener('DOMContentLoaded', function() {
+            var modals = document.querySelectorAll('.modal');
+            modals.forEach(function(modal) {
+                var bootstrapModalInstance = bootstrap.Modal.getInstance(modal);
+                if (bootstrapModalInstance) {
+                    bootstrapModalInstance.hide(); // Hide the modal
+                }
+            });
+        });
+    }
+
     function fetchData(page, search = '') {
         showLoadingOverlay();
-
         $.ajax({
             url: apiUrl,
             method: 'GET',
@@ -42,10 +64,6 @@ var PaginationTable = (function () {
                 populateTable(response.data, page);
                 renderPaginationInfo();
                 renderPaginationLinks();
-
-                // Save current state to localStorage
-                localStorage.setItem('currentPage', page);
-                localStorage.setItem('searchQuery', search);
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching data:', error);
@@ -125,8 +143,14 @@ var PaginationTable = (function () {
                 // Store the URL in a data attribute for the confirmation button
                 $('#confirmDeleteButton').data('url', url);
 
-                // Show the confirmation modal
-                $('#deleteConfirmationModal').modal('show');
+                var modalBackdrops = document.querySelectorAll('.modal-backdrop');
+                modalBackdrops.forEach(function(backdrop) {
+                    backdrop.remove();
+                });
+
+                // Show the confirmation modal (using Bootstrap 5's modal)
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+                deleteModal.show();
             });
 
             // Add event handler for the confirmation button
@@ -134,14 +158,16 @@ var PaginationTable = (function () {
             $('#deleteConfirmationModal').on('click', '#confirmDeleteButton', function () {
                 var url = $(this).data('url'); // Get the URL from the data attribute
                 deleteItem(url); // Call the delete function with the URL
-                $('#deleteConfirmationModal').modal('hide'); // Hide the modal after deletion
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                deleteModal.hide(); // Hide the modal after deletion
             });
 
             // Add event handler for the cancel button
             $('#deleteConfirmationModal').off('click', '.btn-secondary'); // Unbind previous handler
             $('#deleteConfirmationModal').on('click', '.btn-secondary', function () {
                 // Hide the modal when cancel is clicked
-                $('#deleteConfirmationModal').modal('hide');
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                deleteModal.hide();
             });
         }
     }
@@ -267,13 +293,15 @@ var PaginationTable = (function () {
     }
 
     function showLoadingOverlay() {
+        // Ensure no other overlay is visible
+        $('.loading-overlay').remove(); // Remove any existing overlay
         var overlay = $('<div class="loading-overlay"><div class="spinner"></div></div>');
         $('body').append(overlay);
         $('.loading-overlay').show();
     }
 
     function hideLoadingOverlay() {
-        $('.loading-overlay').remove();
+        $('.loading-overlay').remove(); // Remove the overlay after data is fetched
     }
 
     function setupEventHandlers() {
@@ -281,7 +309,7 @@ var PaginationTable = (function () {
             var searchQuery = $('#searchInput').val().trim();
             fetchData(1, searchQuery);
         });
-        
+
         $('#logoutButton').on('click', function () {
             localStorage.removeItem('currentPage');
             localStorage.removeItem('searchQuery');
@@ -297,7 +325,7 @@ var PaginationTable = (function () {
             method: 'DELETE',
             success: function (response) {
                 console.log('Server Response:', response);
-                fetchData(currentPage, $('#searchInput').val()); 
+                fetchData(currentPage, $('#searchInput').val());
             },
             error: function (xhr, status, error) {
                 console.error('Error deleting item:', error);
@@ -305,7 +333,14 @@ var PaginationTable = (function () {
             },
             complete: function () {
                 $deleteButton.prop('disabled', false);
-                $('#deleteConfirmationModal').modal('hide'); 
+                // Manually remove any lingering backdrop
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                deleteModal.hide(); // Hide the modal after deletion
+                // Remove the backdrop after modal is closed
+                var modalBackdrops = document.querySelectorAll('.modal-backdrop');
+                modalBackdrops.forEach(function(backdrop) {
+                    backdrop.remove();
+                });
             }
         });
     }
@@ -314,11 +349,3 @@ var PaginationTable = (function () {
         init: init
     };
 })();
-
-
-
-
-
-
-
-

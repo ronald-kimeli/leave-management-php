@@ -13,7 +13,7 @@ class AlertMessage {
             </div>
             <script>
                 setTimeout(function() {
-                    var alertMessage = document.getElementById('alertMessage');
+                    const alertMessage = document.getElementById('alertMessage');
                     if (alertMessage) {
                         alertMessage.style.opacity = '0';
                         setTimeout(function() {

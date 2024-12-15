@@ -151,6 +151,7 @@ class LeaveTypeController extends Controller
                 echo json_encode(['status' => 'warning', 'message' => 'Leave Type not found', 'redirect' => false]);
                 exit;
             }
+
             if ($leavetpe->delete()) {
                 echo json_encode(['status' => 'success', 'message' => 'Leave Type deleted successfully', 'redirect' => '/admin/leavetypes']);
             } else {

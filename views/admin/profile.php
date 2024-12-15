@@ -45,5 +45,4 @@ $profile = $data ? $data->user[0] : null;
 </div>
 
 <?php
-
 require __DIR__ . "/components/footer.php";

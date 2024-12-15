@@ -1,6 +1,7 @@
 <?php
 
-require __DIR__ . "/../admin/components/header.php"; // Layout header
+require __DIR__ . "/../admin/components/header.php";
+
 if ($viewResult) {
     $description = $Title;
     $request_resourse = __DIR__ . "/{$viewResult->getViewPath()->viewPath}.php";

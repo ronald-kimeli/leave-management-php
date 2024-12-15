@@ -211,27 +211,46 @@ class BaseModel
         return $stmt->fetchColumn() > 0;
     }
 
+//    public function delete()
+//    {
+//
+//        if (!isset($this->attributes['id']) || !$this->attributes['id']) {
+//            throw new \Exception('Cannot delete record without an ID.');
+//        }
+//
+//        // Cascade delete related models
+//        foreach ($this->getCascadingRelations() as $relation) {
+//            $relatedModels = $this->$relation(); // Call the relation method
+//            foreach ($relatedModels as $relatedModel) {
+//            echo $relatedModel;
+//                $relatedModel->delete(); // Assuming related model also has a delete method
+//            }
+//        }
+//
+//        // Proceed to delete the main record
+//        $stmt = $this->db->getConnection()->prepare("DELETE FROM {$this->tableName} WHERE id = ?");
+//        $stmt->execute([$this->attributes['id']]);
+//        return $stmt->rowCount();
+//    }
+
+
+    /**
+     * Generic method to delete a record by its ID
+     *
+     * @return bool
+     */
     public function delete()
     {
-    
-        if (!isset($this->attributes['id']) || !$this->attributes['id']) {
-            throw new \Exception('Cannot delete record without an ID.');
+        $id = $this->attributes['id']; // Assumes 'id' is an attribute for the record
+        $id = $this->__get('department');
+        if (!$id) {
+            return false; // No ID available, cannot delete
         }
 
-        // Cascade delete related models
-        foreach ($this->getCascadingRelations() as $relation) {
-            $relatedModels = $this->$relation(); // Call the relation method
-            foreach ($relatedModels as $relatedModel) {
-                $relatedModel->delete(); // Assuming related model also has a delete method
-            }
-        }
-
-        // Proceed to delete the main record
-        $stmt = $this->db->getConnection()->prepare("DELETE FROM {$this->tableName} WHERE id = ?");
-        $stmt->execute([$this->attributes['id']]);
-        return $stmt->rowCount();
+        $sql = "DELETE FROM {$this->tableName} WHERE id = :id";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        return $stmt->execute([':id' => $id]);
     }
-
     public function count()
     {
         $stmt = $this->db->getConnection()->prepare("SELECT COUNT(id) AS total_records FROM {$this->tableName} WHERE 1=1" . $this->where . $this->whereLike);
@@ -522,7 +541,23 @@ class BaseModel
 
     protected function getCascadingRelations()
     {
-        // Return an array of related models that should be cascaded on delete
-        return [];
+        $relations = [];
+
+        // Check for each relationship type that should cascade
+        if (method_exists($this, 'hasMany')) {
+            $relations[] = 'hasMany'; // You can specify the exact method name here
+        }
+
+        if (method_exists($this, 'belongsTo')) {
+            $relations[] = 'belongsTo';
+        }
+
+        if (method_exists($this, 'belongsToMany')) {
+            $relations[] = 'belongsToMany';
+        }
+
+        // Return array of relationships that need cascading
+        return $relations;
     }
+
 }
