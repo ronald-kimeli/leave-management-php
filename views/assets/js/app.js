@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let sessionExpired = false; 
+  let sessionExpired = false;
   let oldUrl = window.location.pathname;
 
   // Function to create spinner container
@@ -10,12 +10,12 @@ $(document).ready(function () {
     spinnerContainer.style.left = '50%';
     spinnerContainer.style.transform = 'translate(-50%, -50%)';
     spinnerContainer.style.display = 'flex';
-    spinnerContainer.style.flexDirection = 'row'; 
-    spinnerContainer.style.justifyContent = 'center'; 
-    spinnerContainer.style.alignItems = 'center'; 
-    spinnerContainer.style.width = '100vw'; 
-    spinnerContainer.style.height = '100vh'; 
-    spinnerContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; 
+    spinnerContainer.style.flexDirection = 'row';
+    spinnerContainer.style.justifyContent = 'center';
+    spinnerContainer.style.alignItems = 'center';
+    spinnerContainer.style.width = '100vw';
+    spinnerContainer.style.height = '100vh';
+    spinnerContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
     return spinnerContainer;
   }
 
@@ -164,9 +164,9 @@ $(document).ready(function () {
               });
             }
           }
-          
 
-        }, 500); 
+
+        }, 500);
       },
       error: function (error) {
         console.log(error.response);
@@ -181,7 +181,7 @@ $(document).ready(function () {
         setTimeout(function () {
           alertDiv.hide();
           alertDiv
-          .removeClass('alert-danger');
+            .removeClass('alert-danger');
         }, 500);
       }
     });

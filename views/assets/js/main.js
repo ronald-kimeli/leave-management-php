@@ -16,7 +16,6 @@ $(document).ready(function () {
 
   // Initial check when the document is ready
   var currentUrl = window.location.pathname;
-  console.log(currentUrl);
   setActiveSidebarLink(currentUrl);
 
   // Listen for changes in the pathname
@@ -25,29 +24,28 @@ $(document).ready(function () {
       setActiveSidebarLink(newUrl);
   });
 
-
-  $('#leaveTypeForm').submit(function (e) {
-    // Prevent the default form submission
-    e.preventDefault();
-
-    // Get form data
-    var formData = $(this).serialize();
-
-    // Make AJAX POST request
-    $.ajax({
-      type: 'POST',
-      url: $(this).attr('action'),
-      data: formData,
-      success: function (response) {
-        // Handle success response
-        console.log(response);
-      },
-      error: function (xhr, status, error) {
-        // Handle error response
-        console.error(xhr.responseText);
-      }
-    });
-  });
+  // $('#leaveTypeForm').submit(function (e) {
+  //   // Prevent the default form submission
+  //   e.preventDefault();
+  //
+  //   // Get form data
+  //   var formData = $(this).serialize();
+  //
+  //   // Make AJAX POST request
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: $(this).attr('action'),
+  //     data: formData,
+  //     success: function (response) {
+  //       // Handle success response
+  //       console.log(response);
+  //     },
+  //     error: function (xhr, status, error) {
+  //       // Handle error response
+  //       console.error(xhr.responseText);
+  //     }
+  //   });
+  // });
 });
 
 
