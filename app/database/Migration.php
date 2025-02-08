@@ -5,7 +5,8 @@ use PDO;
 use app\database\Database;
 use app\database\TableBlueprint;
 
-class Migration {
+class Migration
+{
     private $db;
 
     public function __construct()
@@ -15,71 +16,66 @@ class Migration {
 
     public function createTable($tableName, callable $callback)
     {
-        $blueprint = new TableBlueprint();
-        $callback($blueprint);
-        $columns = $blueprint->getColumns();
-        $foreignKeys = $blueprint->getForeignKeys();
-        $columnsSql = [];
+        try {
+            $blueprint = new TableBlueprint();
+            $callback($blueprint);
 
-        // Create column definitions
-        foreach ($columns as $name => $definition) {
-            $columnsSql[] = "$name $definition";
-        }
-
-        // Create table SQL
-        $sql = "CREATE TABLE $tableName (" . implode(', ', $columnsSql) . ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        $this->db->getConnection()->exec($sql);
-
-        // Add foreign key constraints
-        foreach ($foreignKeys as $key) {
-            $columnName = $key['columnName'];
-            $refTableName = $key['refTableName'];
-            $refColumnName = $key['refColumnName'];
-
-            // Generate constraint name
-            $constraintName = $this->generateConstraintName($tableName, $columnName);
-
-            // Check if the constraint exists
-            $constraintExists = $this->checkConstraintExists($tableName, $constraintName);
-
-            if ($constraintExists) {
-                // Drop the existing foreign key constraint if it exists
-                $dropSql = "ALTER TABLE $tableName DROP FOREIGN KEY $constraintName";
-                $this->db->getConnection()->exec($dropSql);
-            }
-
-            // Generate and apply the new foreign key with CASCADE actions
-            $constraintSql = $this->generateForeignKeySQL(
-                $tableName,
-                $columnName,
-                $refTableName,
-                $refColumnName
+            $columnsSql = array_map(
+                fn($name, $definition) => "$name $definition",
+                array_keys($blueprint->getColumns()),
+                $blueprint->getColumns()
             );
-            $this->db->getConnection()->exec($constraintSql);
+
+            $sql = "CREATE TABLE $tableName (" . implode(', ', $columnsSql) . ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+            $this->db->getConnection()->exec($sql);
+
+            foreach ($blueprint->getForeignKeys() as $key) {
+                $this->addForeignKeyConstraint($tableName, $key);
+            }
+        } catch (\PDOException $e) {
+            echo "\033[1;31mError creating table '$tableName': " . $e->getMessage() . "\033[0m\n";
+        }
+    }
+
+    private function addForeignKeyConstraint($tableName, $key)
+    {
+        $columnName = $key['columnName'];
+        $refTableName = $key['refTableName'];
+        $refColumnName = $key['refColumnName'];
+
+        // Generate constraint name
+        $constraintName = $this->generateConstraintName($tableName, $columnName);
+
+        try {
+            // Add the foreign key constraint with ON DELETE CASCADE
+            $sql = "ALTER TABLE $tableName 
+                    ADD CONSTRAINT $constraintName 
+                    FOREIGN KEY ($columnName) 
+                    REFERENCES $refTableName($refColumnName) 
+                    ON DELETE CASCADE";
+            $this->db->getConnection()->exec($sql);
+        } catch (\PDOException $e) {
+            echo "\033[1;31mError adding foreign key constraint to '$tableName': " . $e->getMessage() . "\033[0m\n";
         }
     }
 
     public function dropTable($tableName)
     {
         // Disable foreign key checks to avoid constraint errors
-        $sql = "SET FOREIGN_KEY_CHECKS=0";
-        $this->db->getConnection()->exec($sql);
+        $this->db->getConnection()->exec("SET FOREIGN_KEY_CHECKS=0");
 
         // Drop the table
-        $sql = "DROP TABLE IF EXISTS $tableName";
-        $this->db->getConnection()->exec($sql);
+        $this->db->getConnection()->exec("DROP TABLE IF EXISTS $tableName");
 
         // Re-enable foreign key checks
-        $sql = "SET FOREIGN_KEY_CHECKS=1";
-        $this->db->getConnection()->exec($sql);
+        $this->db->getConnection()->exec("SET FOREIGN_KEY_CHECKS=1");
 
         echo "\033[1;32mTable '$tableName' dropped successfully.\033[0m\n";
     }
 
     public function tableExists($tableName)
     {
-        $sql = "SHOW TABLES LIKE '$tableName'";
-        $result = $this->db->getConnection()->query($sql);
+        $result = $this->db->getConnection()->query("SHOW TABLES LIKE '$tableName'");
         return $result->rowCount() > 0;
     }
 
@@ -116,22 +112,22 @@ class Migration {
     }
 
     // Generates the constraint name for the foreign key
-    public function generateConstraintName($tableName, $columnName)
+    private function generateConstraintName($tableName, $columnName)
     {
-        return "fk_$columnName" . "_" . $tableName;
+        return $tableName . "_" . $columnName . "_foreign";
     }
 
     // Check if the foreign key constraint exists in the database
-    public function checkConstraintExists($tableName, $constraintName)
+    private function checkConstraintExists($tableName, $constraintName)
     {
-        $sql = "SELECT COUNT(*) AS count FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '$tableName' AND CONSTRAINT_NAME = '$constraintName' AND CONSTRAINT_TYPE = 'FOREIGN KEY'";
+        $sql = "SELECT COUNT(*) AS count from INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND TABLE_NAME = '$tableName' AND CONSTRAINT_NAME = '$constraintName' AND CONSTRAINT_TYPE = 'FOREIGN KEY'";
         $result = $this->db->getConnection()->query($sql);
         $row = $result->fetch();
         return $row['count'] > 0;
     }
 
     // Generate the SQL for the foreign key, including CASCADE actions
-    public function generateForeignKeySQL($tableName, $columnName, $refTableName, $refColumnName)
+    private function generateForeignKeySQL($tableName, $columnName, $refTableName, $refColumnName)
     {
         $constraintName = $this->generateConstraintName($tableName, $columnName);
 
@@ -140,4 +136,5 @@ class Migration {
 
         return $sql;
     }
+
 }

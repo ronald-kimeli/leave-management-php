@@ -132,8 +132,11 @@ class TableBlueprint
         return $this;
     }
 
-    public function onDelete()
+    public function onDelete($action = 'CASCADE') 
     {
+        if (!empty($this->currentColumn) && isset($this->foreignKeys[$this->currentColumn])) {
+            $this->foreignKeys[$this->currentColumn]['onDelete'] = $action;
+        }
         return $this;
     }
 

@@ -70,23 +70,23 @@
         { key: 'role.name', label: 'Role' },
         { key: 'actions', label: 'Actions' }
     ], [
-    {
-      label: '<i class="bi bi-eye"></i>',
-      class: 'btn btn-sm btn-info view',
-      url: '/admin/employee/show/',
-    },
-    {
-      label: '<i class="bi bi-pencil-square"></i>',
-      class: 'btn btn-sm btn-warning edit',
-      url: '/admin/employee/update/',
-    },
-    {
-        label: '<i class="bi bi-trash"></i>',
-        class: 'btn btn-sm btn-danger delete',
-        action: 'delete',
-        url: '/admin/employee/delete/'  
-    }
-  ]);
+        {
+            label: '<i class="bi bi-eye"></i>',
+            class: 'btn btn-sm btn-info view',
+            url: '/admin/employee/show/',
+        },
+        {
+            label: '<i class="bi bi-pencil-square"></i>',
+            class: 'btn btn-sm btn-warning edit',
+            url: '/admin/employee/update/',
+        },
+        {
+            label: '<i class="bi bi-trash"></i>',
+            class: 'btn btn-sm btn-danger delete',
+            action: 'delete',
+            url: '/admin/employee/delete/'
+        }
+    ]);
 </script>
 
 <?php require __DIR__ . "/../components/footer.php"; ?>

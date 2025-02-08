@@ -77,7 +77,7 @@ class Seeder
             }
 
             $department_id = $faker->numberBetween(1, 10); // Assuming departments already seeded
-            $password = password_hash('12345678', PASSWORD_DEFAULT);
+            $password = password_hash('password123', PASSWORD_DEFAULT);
             $verify_token = md5($email);
             $status = $faker->randomElement(['active', 'disabled']);
             $reset_token = null;
