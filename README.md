@@ -77,6 +77,15 @@ Composer libraries (installed for you): `phpmailer/phpmailer` ^6.6 and `fakerphp
 
    Open <http://localhost:8088>. For a real server, see below.
 
+## Demo accounts
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@gmail.com` | `password123` |
+| Employee | `employee@gmail.com` | `password123` |
+
+Change or delete these before the app is reachable by anyone else.
+
 ## Features
 
 **Public site**
@@ -99,15 +108,6 @@ Composer libraries (installed for you): `phpmailer/phpmailer` ^6.6 and `fakerphp
 **Dark mode and auto-logout.** A toggle in the top bar switches between light and dark (remembered per browser), both driven by `public/assets/css/theme.css`. After 15 minutes of inactivity users get a warning and are then logged out (`SessionAuthMiddleware::IDLE_TIMEOUT`).
 
 **One design, two roles.** Admins and employees share the same dashboard layout. The sidebar menu is built from the signed-in role, and each panel is closed to the other role: an employee who opens an admin URL is sent back to their own dashboard (and the other way round).
-
-## Demo accounts
-
-| Role | Email | Password |
-|---|---|---|
-| Admin | `admin@gmail.com` | `password123` |
-| Employee | `employee@gmail.com` | `password123` |
-
-Change or delete these before the app is reachable by anyone else.
 
 ## UI | UX
 
