@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php $appliedleaves = $data ? $data->appliedleaves : null; ?>
 <div class="container-fluid px-4">
   <h4 class="mt-4">User Dashboard</h4>

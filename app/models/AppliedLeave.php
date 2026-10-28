@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\support\BaseModel;
 use app\models\User;
 
 class AppliedLeave extends BaseModel

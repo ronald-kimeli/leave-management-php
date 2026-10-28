@@ -1,8 +1,8 @@
 
-<main id="forgot-password">
+<main id="forgot-password" class="auth-page">
     <?php require __DIR__ . "/messages/message.php"; ?>
-    <div class="row justify-content-center">
-        <div class="col-md-9 col-lg-9 col-xs-12 col-sm-12">
+    <div class="auth-wrap">
+        <div class="auth-card-col">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <div class="row">

@@ -3,7 +3,7 @@
   <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Dashboard</li>
   </ol>
-  <?php include 'message.php' ?>
+  <?php \app\messages\AlertMessage::display(); ?>
   <div class="row">
     <div class="col-xl-12 col-md-6 col-sm-4">
       <div class="card bg-info text-white mb-4">
@@ -21,4 +21,4 @@
 </div>
 
 <?php
-require __DIR__ . "/components/footer.php";
+require __DIR__ . "/../layouts/dashboard/footer.php";

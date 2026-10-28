@@ -10,6 +10,7 @@ class View
     private $message;
     private $messageCode;
     private $statusCode;
+    private $isJson = false;
 
     public function __construct($viewPath, $viewData,$headerTitle = null, $message = null, $messageCode = null, $statusCode = 200)
     {
@@ -66,6 +67,32 @@ class View
     public static function render($viewPath, $viewData = [],$headerTitle = null, $message = null,  $messageCode = null, $statusCode = 200)
     {
         return new self($viewPath, $viewData, $headerTitle,$message,  $messageCode, $statusCode);
+    }
+
+    // JSON response: $data is encoded as-is, no layout is rendered.
+    public static function json($data, $statusCode = 200)
+    {
+        $response = new self('json.data', $data, null, null, null, $statusCode);
+        $response->viewData = $data;
+        $response->isJson = true;
+        return $response;
+    }
+
+    public function isJson(): bool
+    {
+        return $this->isJson;
+    }
+
+    // Writes the JSON body and headers.
+    public function sendJson(): void
+    {
+        http_response_code($this->statusCode);
+        header('Content-Type: application/json');
+        echo json_encode($this->isJson ? $this->viewData : [
+            'data' => $this->viewData,
+            'message' => $this->message,
+            'message_code' => $this->messageCode,
+        ]);
     }
 
     public static function redirect($url, $message = null, $messageCode = null, $statusCode = 302)

@@ -38,4 +38,4 @@
   </div>
 </div>
 
-<?php require __DIR__ . "/../components/footer.php"; ?>
+<?php require __DIR__ . "/../../layouts/dashboard/footer.php"; ?>

@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $department = $data ? $data->department[0] : null;
 ?>

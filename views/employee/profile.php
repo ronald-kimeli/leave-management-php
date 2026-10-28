@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php $user = $data ? $data->user : null;?>
 <div class="container-fluid px-4">
     <h4 class="mt-4">Profile</h4>
@@ -32,7 +33,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <img src="/views/assets/img/avatar.png" class="d-block img-fluid mb-3">
+            <img src="/assets/img/avatar.webp" class="d-block img-fluid mb-3">
             <button class="btn btn-primary btn-block">Update</button>
             <button class="btn btn-danger btn-block">Delete</button>
         </div>

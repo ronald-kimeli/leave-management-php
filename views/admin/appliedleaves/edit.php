@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 // Your PHP code to initialize $appliedleave and $total_days
 $appliedleave = $data ? $data->appliedleave[0] : null;
@@ -133,5 +134,5 @@ if ($from_date && $to_date) {
 </script>
 
 <?php
-require __DIR__ . "/../components/footer.php";
+require __DIR__ . "/../../layouts/dashboard/footer.php";
 ?>

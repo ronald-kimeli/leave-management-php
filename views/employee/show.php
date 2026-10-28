@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $leavetype = $data ? $data->leavetype[0] : null;
 ?>

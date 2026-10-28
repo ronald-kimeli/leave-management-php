@@ -1,10 +1,13 @@
 <?php
-require __DIR__ ."/components/header.php"; // Header template
+/** @var \app\Responses\View|null $viewResult Provided by the router. */
+require __DIR__ ."/../components/header.php"; // Header template
 
 // echo "<pre/>";
 // var_dump($viewResult->getViewPath());
 // exit(0);
-if($viewResult){
+$viewResult ??= null;
+if ($viewResult !== null) {
+  /** @var object $data */
   // Try Listen to all of http Methods 
   $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
   if ($pageWasRefreshed) {
@@ -28,4 +31,4 @@ if($viewResult){
   }
 }
 
-require __DIR__ ."/components/scripts.php"; // Layout scripts
+require __DIR__ ."/../components/scripts.php"; // Layout scripts

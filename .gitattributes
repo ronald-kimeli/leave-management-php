@@ -1,0 +1,18 @@
+# Third-party / generated assets must not count towards the repo's language stats
+public/assets/**                 linguist-vendored
+public/assets/frontend/**        linguist-vendored
+**/*.min.css                     linguist-vendored
+**/*.min.js                      linguist-vendored
+public/assets/css/sb-admin-2.css linguist-vendored
+public/assets/css/styles.css     linguist-vendored
+composer.lock                    linguist-generated
+
+# Keep the app's own code visible
+*.php                            linguist-detectable
+public/assets/css/dashboard.css  linguist-vendored=false
+public/assets/frontend/css/custom.css linguist-vendored=false
+
+# Binary assets
+*.png  binary
+*.jpg  binary
+*.ico  binary

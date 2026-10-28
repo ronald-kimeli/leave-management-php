@@ -4,7 +4,7 @@ require __DIR__ . "/messages/message.php";
 
 <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
-        <a href="/" class="logo me-auto"><img src="/views/assets/frontend/images/leave2-logo.png" alt="leave-logo"
+        <a href="/" class="logo me-auto"><img src="/assets/frontend/images/leave2-logo.webp" alt="leave-logo"
                 class="img-fluid"></a>
 
         <nav id="navbar" class="navbar">
@@ -29,7 +29,7 @@ require __DIR__ . "/messages/message.php";
                     time.</h2>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
-                <img src="/views/assets/frontend/images/home2.png" class="img-fluid animated" alt="">
+                <img src="/assets/frontend/images/home2.webp" class="img-fluid animated" alt="">
             </div>
         </div>
     </div>
@@ -148,4 +148,4 @@ require __DIR__ . "/messages/message.php";
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
-<?php require __DIR__ . '/./components/footer.php'; ?>
+<?php require __DIR__ . '/../components/footer.php'; ?>

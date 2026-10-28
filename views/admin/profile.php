@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $profile = $data ? $data->user[0] : null;
 ?>
@@ -37,7 +38,7 @@ $profile = $data ? $data->user[0] : null;
       </div>
     </div>
     <div class="col-md-3 mt-4">
-      <img src="/views/assets/img/avatar.png" class="d-block img-fluid mb-3">
+      <img src="/assets/img/avatar.webp" class="d-block img-fluid mb-3">
       <button class="btn btn-primary btn-block">Update</button>
       <button class="btn btn-danger btn-block">Delete</button>
     </div>
@@ -45,4 +46,4 @@ $profile = $data ? $data->user[0] : null;
 </div>
 
 <?php
-require __DIR__ . "/components/footer.php";
+require __DIR__ . "/../layouts/dashboard/footer.php";

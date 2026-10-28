@@ -16,25 +16,54 @@ class Migration
 
     public function createTable($tableName, callable $callback)
     {
+        $blueprint = new TableBlueprint();
+        $callback($blueprint);
+
+        $columnsSql = array_map(
+            fn($name, $definition) => "$name $definition",
+            array_keys($blueprint->getColumns()),
+            $blueprint->getColumns()
+        );
+
+        $sql = "CREATE TABLE $tableName (" . implode(', ', $columnsSql) . ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+        $this->db->getConnection()->exec($sql);
+
         try {
-            $blueprint = new TableBlueprint();
-            $callback($blueprint);
-
-            $columnsSql = array_map(
-                fn($name, $definition) => "$name $definition",
-                array_keys($blueprint->getColumns()),
-                $blueprint->getColumns()
-            );
-
-            $sql = "CREATE TABLE $tableName (" . implode(', ', $columnsSql) . ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-            $this->db->getConnection()->exec($sql);
-
             foreach ($blueprint->getForeignKeys() as $key) {
                 $this->addForeignKeyConstraint($tableName, $key);
             }
         } catch (\PDOException $e) {
-            echo "\033[1;31mError creating table '$tableName': " . $e->getMessage() . "\033[0m\n";
+            // The table was created a moment ago by this run, so it holds no data
+            $this->dropTable($tableName);
+            throw $e;
         }
+    }
+
+    public function addColumns($tableName, callable $callback)
+    {
+        $blueprint = new TableBlueprint();
+        $callback($blueprint);
+
+        foreach ($blueprint->getColumns() as $name => $definition) {
+            if ($this->columnExists($tableName, $name)) {
+                echo "\033[1;33mColumn $tableName.$name already exists, skipped.\033[0m\n";
+                continue;
+            }
+            $this->db->getConnection()->exec("ALTER TABLE $tableName ADD COLUMN $name $definition");
+        }
+
+        foreach ($blueprint->getForeignKeys() as $key) {
+            $this->addForeignKeyConstraint($tableName, $key);
+        }
+    }
+
+    public function columnExists($tableName, $columnName)
+    {
+        $stmt = $this->db->getConnection()->prepare(
+            "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?"
+        );
+        $stmt->execute([$tableName, $columnName]);
+        return $stmt->fetchColumn() > 0;
     }
 
     private function addForeignKeyConstraint($tableName, $key)
@@ -46,17 +75,13 @@ class Migration
         // Generate constraint name
         $constraintName = $this->generateConstraintName($tableName, $columnName);
 
-        try {
-            // Add the foreign key constraint with ON DELETE CASCADE
-            $sql = "ALTER TABLE $tableName 
-                    ADD CONSTRAINT $constraintName 
-                    FOREIGN KEY ($columnName) 
-                    REFERENCES $refTableName($refColumnName) 
-                    ON DELETE CASCADE";
-            $this->db->getConnection()->exec($sql);
-        } catch (\PDOException $e) {
-            echo "\033[1;31mError adding foreign key constraint to '$tableName': " . $e->getMessage() . "\033[0m\n";
-        }
+        // Add the foreign key constraint with ON DELETE CASCADE
+        $sql = "ALTER TABLE $tableName 
+                ADD CONSTRAINT $constraintName 
+                FOREIGN KEY ($columnName) 
+                REFERENCES $refTableName($refColumnName) 
+                ON DELETE CASCADE";
+        $this->db->getConnection()->exec($sql);
     }
 
     public function dropTable($tableName)
@@ -85,29 +110,78 @@ class Migration
         return date("m/d/Y h:i:s a", time());
     }
 
-    public function executeTable($tableName, callable $callback)
+    private function ensureMigrationsTable()
     {
-        try {
-            $startTime = microtime(true); // Start timing
+        $this->db->getConnection()->exec(
+            "CREATE TABLE IF NOT EXISTS migrations (
+                id VARCHAR(191) PRIMARY KEY,
+                ran_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+        );
+    }
 
-            if ($this->tableExists($tableName)) {
-                echo "\033[1;31mTable $tableName already exists.\033[0m\n"; // Red for existing table
-                $response = readline("Do you want to drop the existing table and proceed with migration? (yes/no): ");
-                if (empty($response) || strtolower($response) === 'yes' || strtolower($response) === 'y') {
-                    $this->dropTable($tableName);
-                    $this->createTable($tableName, $callback);
-                    $duration = round(microtime(true) - $startTime); // Calculate duration
-                    echo "\033[1;32m[\033[1;34m$tableName table migration \033[0;36m" . $this->current_time() . "\033[1;32m] \033[1;37mSuccess! -----> {$duration}s\033[0m\n\n"; // Green for success, with spacing
-                } else {
-                    echo "\033[1;33mMigration for table $tableName skipped.\033[0m\n\n"; // Yellow for skipped, with spacing
-                }
-            } else {
-                $this->createTable($tableName, $callback);
-                $duration = round(microtime(true) - $startTime); // Calculate duration
-                echo "\033[1;32mMigration for table '$tableName' successful! -----> {$duration}s\033[0m\n\n\n"; // Green for success, with spacing
+    private function ranMigrations()
+    {
+        return $this->db->getConnection()->query("SELECT id FROM migrations")->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    private function recordMigration($id)
+    {
+        $this->db->getConnection()->prepare("INSERT INTO migrations (id) VALUES (?)")->execute([$id]);
+    }
+
+    /**
+     * Drops every table in the database, including the migrations log.
+     */
+    public function fresh()
+    {
+        $pdo = $this->db->getConnection();
+        $pdo->exec("SET FOREIGN_KEY_CHECKS=0");
+        foreach ($pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN) as $table) {
+            $pdo->exec("DROP TABLE IF EXISTS `$table`");
+            echo "\033[1;32mTable '$table' dropped.\033[0m\n";
+        }
+        $pdo->exec("SET FOREIGN_KEY_CHECKS=1");
+    }
+
+    /**
+     * Runs every migration not yet recorded in the migrations table, in array order.
+     * Each migration: ['id' => ..., 'type' => 'create'|'add_columns', 'table' => ..., 'up' => callable].
+     * A 'create' migration whose table already exists (database that predates the log) is
+     * recorded without touching the table.
+     */
+    public function run(array $migrations, $onlyTable = null)
+    {
+        $this->ensureMigrationsTable();
+        $ran = $this->ranMigrations();
+        $pending = 0;
+
+        foreach ($migrations as $m) {
+            if (in_array($m['id'], $ran, true) || ($onlyTable && $m['table'] !== $onlyTable)) {
+                continue;
             }
-        } catch (\PDOException $e) {
-            echo "\033[1;31mMigration failed for table '$tableName': " . $e->getMessage() . "\033[0m\n\n"; // Red for error, with spacing
+            $pending++;
+            $startTime = microtime(true);
+
+            try {
+                if ($m['type'] === 'create' && $this->tableExists($m['table'])) {
+                    echo "\033[1;33mTable {$m['table']} already exists, recorded {$m['id']} without changes.\033[0m\n";
+                } elseif ($m['type'] === 'create') {
+                    $this->createTable($m['table'], $m['up']);
+                } else {
+                    $this->addColumns($m['table'], $m['up']);
+                }
+                $this->recordMigration($m['id']);
+                $duration = round(microtime(true) - $startTime);
+                echo "\033[1;32m[\033[1;34m{$m['id']} \033[0;36m" . $this->current_time() . "\033[1;32m] \033[1;37mSuccess! -----> {$duration}s\033[0m\n\n";
+            } catch (\PDOException $e) {
+                echo "\033[1;31mMigration {$m['id']} failed: " . $e->getMessage() . "\033[0m\n\n";
+                return;
+            }
+        }
+
+        if ($pending === 0) {
+            echo "Nothing to migrate.\n";
         }
     }
 

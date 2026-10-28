@@ -1,0 +1,14 @@
+<?php
+
+use app\database\Seeder;
+
+// Autoload classes
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$seeder = new Seeder();
+// $seeder->seedAll();
+$seeder->seedTable('departments');
+$seeder->seedTable('roles');
+$seeder->seedTable('leavetypes');
+$seeder->seedTable('users');
+$seeder->seedTable('appliedleaves');

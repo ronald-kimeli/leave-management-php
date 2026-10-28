@@ -1,0 +1,179 @@
+html body {
+  font-size: 14px;
+}
+
+/* Shared dashboard styles (admin + employee) */
+/* General Table Styling */
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid var(--app-border);
+    text-align: left;
+    padding: 8px;
+}
+
+.table th {
+    background-color: var(--app-table-head);
+}
+
+/* Pagination Styling */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination p {
+    margin: 0;
+}
+
+.pagination .pagination-links {
+    text-align: right;
+}
+
+.pagination button {
+    margin-left: 4px;
+    background-color: var(--app-table-head);
+    border: 1px solid var(--app-border);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.pagination button.active {
+    background-color: var(--app-primary);
+    color: #fff;
+    border: 1px solid var(--app-primary);
+}
+
+/* Search Container Styling */
+.search-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+    gap: 1rem !important;
+}
+
+.search-container .left {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.search-container .left input[type=text] {
+    padding: 8px !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    border: 1px solid var(--app-border) !important;
+    border-radius: 4px !important;
+}
+
+.search-container .left button {
+    padding: 8px 12px !important;
+    background-color: var(--app-primary) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    margin-left: 5px !important;
+}
+
+/* Loading Overlay Styling */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--app-overlay);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+.loading-overlay .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--app-primary);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+/* Action Icons Styling (e.g., for delete buttons) */
+.action-icons {
+    text-align: center;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    width: max-content;
+    max-width: 300px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+/* Responsive Styling for Small Screens */
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        padding: 6px;
+    }
+
+    .dropdown-menu {
+        max-width: 100%;
+        right: auto;
+        left: 0;
+    }
+
+    .pagination {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .pagination .pagination-links {
+        margin-top: 10px;
+    }
+
+    .pagination button {
+        margin-left: 0;
+        margin-bottom: 4px;
+    }
+}
+
+/* Keyframes for Spinner Animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal Styling (Bootstrap overrides) */
+.modal-content {
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--app-border);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--app-border);
+}

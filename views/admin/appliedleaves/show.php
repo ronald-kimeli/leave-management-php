@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $appliedleave = $data ? $data->appliedleave[0] : null;
 $from_date = $appliedleave ? $appliedleave->from_date : '';
@@ -114,5 +115,5 @@ if ($from_date && $to_date) {
 </div>
 
 <?php
-require __DIR__ . "/../components/footer.php";
+require __DIR__ . "/../../layouts/dashboard/footer.php";
 ?>

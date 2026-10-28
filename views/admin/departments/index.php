@@ -77,8 +77,8 @@
 </div>
 
 
-<script src="/views/assets/frontend/js/jquery.min.js"></script>
-<script src="/views/assets/js/PaginationTable.js"></script>
+<script src="/assets/frontend/js/jquery.min.js"></script>
+<script src="/assets/js/PaginationTable.js"></script>
 
 <script>
   PaginationTable.init('/departments', [
@@ -109,7 +109,7 @@
 
 <?php
 
-require __DIR__ . "/../components/footer.php";
+require __DIR__ . "/../../layouts/dashboard/footer.php";
 
 
 

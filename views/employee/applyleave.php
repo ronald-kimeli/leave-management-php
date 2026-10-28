@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $leave_type = $data ? $data->leave_type : null;
 $user_id = $data ? $data->user_id : null;

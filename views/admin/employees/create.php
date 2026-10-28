@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $departments = $data ? $data->departments : null;
 $roles = $data ? $data->roles : null;
@@ -104,4 +105,4 @@ $roles = $data ? $data->roles : null;
 </div>
 
 <?php
-require __DIR__ . "/../components/footer.php";
+require __DIR__ . "/../../layouts/dashboard/footer.php";

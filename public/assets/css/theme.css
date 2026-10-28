@@ -1,0 +1,293 @@
+/*
+ * Single source of truth for colours, shared by the public site and the dashboards.
+ * Light values live on :root; dark values are applied through Bootstrap's data-bs-theme="dark".
+ */
+:root {
+  --app-primary: #0d6efd;
+  --app-primary-dark: #0a58ca;
+  --app-primary-contrast: #fff;
+  --app-nav: #0d6efd;
+  --app-sidebar: #212529;
+  --app-sidebar-footer: #343a40;
+  --app-body: #fff;
+  --app-surface: #fff;
+  --app-surface-muted: #f8f9fa;
+  --app-table-head: #e9edf7;
+  --app-text: #212529;
+  --app-text-muted: #6c757d;
+  --app-border: #dee2e6;
+  --app-overlay: rgba(255, 255, 255, 0.7);
+}
+
+[data-bs-theme="dark"] {
+  --app-primary: #4d94ff;
+  --app-primary-dark: #2f6fd1;
+  --app-primary-contrast: #fff;
+  --app-nav: #0b3d91;
+  --app-sidebar: #14171a;
+  --app-sidebar-footer: #1f2327;
+  --app-body: #0f1216;
+  --app-surface: #1a1d21;
+  --app-surface-muted: #15181c;
+  --app-table-head: #243049;
+  --app-text: #dee2e6;
+  --app-text-muted: #9aa5b1;
+  --app-border: #2f353b;
+  --app-overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* Bootstrap tokens follow the palette above */
+:root,
+[data-bs-theme] {
+  --bs-primary: var(--app-primary);
+  --bs-link-color: var(--app-primary);
+  --bs-link-hover-color: var(--app-primary-dark);
+  --bs-border-color: var(--app-border);
+}
+
+body {
+  background-color: var(--app-body);
+  color: var(--app-text);
+}
+
+/* Dashboard shell */
+.sb-topnav.navbar,
+.sb-topnav.bg-primary {
+  background-color: var(--app-nav) !important;
+}
+
+.sb-sidenav-dark {
+  background-color: var(--app-sidebar);
+}
+
+.sb-sidenav-dark .sb-sidenav-footer {
+  background-color: var(--app-sidebar-footer);
+}
+
+#layoutSidenav_content,
+#layoutSidenav_content main {
+  background-color: var(--app-body);
+  color: var(--app-text);
+}
+
+#layoutSidenav_content footer,
+#layoutSidenav_content footer.bg-light {
+  background-color: var(--app-surface-muted) !important;
+  color: var(--app-text-muted);
+}
+
+.card {
+  background-color: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.card-header,
+.card-footer {
+  background-color: var(--app-surface-muted);
+  border-color: var(--app-border);
+}
+
+.breadcrumb-item,
+.breadcrumb-item.active {
+  color: var(--app-text-muted);
+}
+
+.table {
+  --bs-table-color: var(--app-text);
+  --bs-table-border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.table th {
+  background-color: var(--app-table-head);
+  color: var(--app-text);
+}
+
+.table th,
+.table td {
+  border-color: var(--app-border);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--app-surface);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.btn-primary,
+.search-container .left button {
+  background-color: var(--app-primary);
+  border-color: var(--app-primary);
+  color: var(--app-primary-contrast);
+}
+
+.btn-primary:hover,
+.search-container .left button:hover {
+  background-color: var(--app-primary-dark);
+  border-color: var(--app-primary-dark);
+}
+
+.pagination button {
+  background-color: var(--app-surface-muted);
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.pagination button.active {
+  background-color: var(--app-primary);
+  border-color: var(--app-primary);
+  color: var(--app-primary-contrast);
+}
+
+.dropdown-menu,
+.modal-content {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+.dropdown-item {
+  color: var(--app-text);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--app-surface-muted);
+}
+
+.loading-overlay {
+  background-color: var(--app-overlay);
+}
+
+/* Theme toggle button: show the icon for the mode you would switch to */
+[data-theme-toggle] .theme-icon-dark,
+[data-bs-theme="dark"] [data-theme-toggle] .theme-icon-light {
+  display: none;
+}
+
+[data-bs-theme="dark"] [data-theme-toggle] .theme-icon-dark {
+  display: inline;
+}
+
+/* Public auth pages: one card centred in the middle of the page, sized by max-width rather than grid ratios */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 1rem;
+}
+
+.auth-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card-col {
+  width: 100%;
+  max-width: 960px;
+}
+
+/* No stray horizontal scroll from negative row gutters or 100vw elements */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Readable text: nothing falls below AA contrast in either mode */
+label,
+.form-label,
+.form-check-label,
+.custom-control-label,
+.modal-body,
+.modal-title,
+h1, h2, h3, h4, h5, h6 {
+  color: var(--app-text);
+  opacity: 1;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: var(--app-text-muted);
+  opacity: 1;
+}
+
+.text-muted,
+.text-body-secondary,
+.text-gray-500,
+.text-gray-600,
+.text-gray-700 {
+  color: var(--app-text-muted) !important;
+}
+
+.text-gray-100,
+.text-gray-200,
+.text-gray-300,
+.text-gray-400,
+.text-gray-800,
+.text-gray-900 {
+  color: var(--app-text) !important;
+}
+
+.fa-gray-400,
+.text-gray-400 i {
+  color: var(--app-text-muted);
+}
+
+.dropdown-item i {
+  color: var(--app-text-muted) !important;
+}
+
+.btn:disabled,
+.pagination button:disabled {
+  opacity: 0.65;
+  color: var(--app-text-muted);
+}
+
+/* Sidebar and top bar: raise the faint white-on-dark values */
+.sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.sb-sidenav-dark .sb-sidenav-menu .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sb-sidenav-dark .sb-sidenav-menu .nav-link:hover,
+.sb-sidenav-dark .sb-sidenav-menu .nav-link.active,
+.sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+  color: #fff;
+}
+
+.sb-sidenav-dark,
+.sb-sidenav-dark .sb-sidenav-footer {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sb-topnav.navbar-dark #sidebarToggle,
+.sb-topnav .nav-link,
+.sb-topnav .navbar-brand {
+  color: #fff;
+}
+
+/* Public site */
+#footer,
+#footer p,
+#footer a,
+#footer b {
+  color: #fff;
+}
+
+.card a:not(.btn) {
+  color: var(--app-primary);
+}

@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php 
 $apply_leave = $data ? $data->apply_leave : 0;
 $leave_type = $data ? $data->leave_type : 0;
@@ -46,4 +47,4 @@ $departments = $data ? $data->departments : 0;
     </div>
 </div>
 
-<?php require __DIR__ . "/components/footer.php"; ?>
+<?php require __DIR__ . "/../layouts/dashboard/footer.php"; ?>

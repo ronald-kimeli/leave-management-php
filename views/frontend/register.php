@@ -1,10 +1,11 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <?php
 $departments = $data ? $data->departments : null;
 ?>
 
-<main id="register">
-    <div class="row justify-content-center">
-        <div class="col-md-9 col-lg-9 col-xs-12 col-sm-12">
+<main id="register" class="auth-page">
+    <div class="auth-wrap">
+        <div class="auth-card-col">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
             

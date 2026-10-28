@@ -1,8 +1,34 @@
 <?php
+// Front controller: every request passes through here. Under `php -S localhost:8088` run from
+// the project root it also serves the static files in public/, so no -t flag is needed.
+// With a real virtual host, point the document root at public/ (its index.php loads this file).
+if (PHP_SAPI === 'cli-server') {
+    $publicDir = __DIR__ . '/public';
+    $path = rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/');
+    $file = realpath($publicDir . $path);
+
+    if ($file !== false && is_file($file)
+        && str_starts_with($file, $publicDir . DIRECTORY_SEPARATOR)
+        && !str_starts_with(basename($file), '.')
+        && pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
+        $types = [
+            'css' => 'text/css', 'js' => 'application/javascript', 'svg' => 'image/svg+xml',
+            'webp' => 'image/webp', 'png' => 'image/png', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif', 'ico' => 'image/x-icon', 'json' => 'application/json',
+            'woff' => 'font/woff', 'woff2' => 'font/woff2', 'ttf' => 'font/ttf',
+        ];
+        header('Content-Type: ' . ($types[strtolower(pathinfo($file, PATHINFO_EXTENSION))] ?? 'application/octet-stream'));
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        return;
+    }
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use app\models\Route;
+use app\support\Route;
 use app\controllers\FrontEndController;
+use app\controllers\SessionController;
 use app\Middleware\SessionAuthMiddleware;
 use app\controllers\admin\LeaveController;
 use app\controllers\admin\EmployeeController;
@@ -17,7 +43,6 @@ Route::get('/', ['controller' => FrontEndController::class, 'method' => 'index']
 Route::get('/register', ['controller' => FrontEndController::class, 'method' => 'registerForm']);
 Route::post('/register', ['controller' => FrontEndController::class, 'method' => 'register']);
 Route::get('/login', ['controller' => FrontEndController::class, 'method' => 'login']);
-Route::get('/about', ['controller' => FrontEndController::class, 'method' => 'about']);
 Route::get('/forgot/password', ['controller' => FrontEndController::class, 'method' => 'forgotPassword']);
 Route::post('/signin', ['controller' => FrontEndController::class, 'method' => 'signin']);
 Route::get('/verify_email', ['controller' => FrontEndController::class, 'method' => 'verifyEmail']);
@@ -28,6 +53,7 @@ Route::post('/new_password', ['controller' => FrontEndController::class, 'method
 // Define routes using static methods in Route class
 Route::group('sessionAuth', function () {
     Route::middleware(SessionAuthMiddleware::class);
+    Route::get('/session/ping', ['controller' => SessionController::class, 'method' => 'ping']);
     Route::get('/apply-leave', ['controller' => FrontEndController::class, 'method' => 'applyLeave']);
     Route::post('/allcode', ['controller' => FrontEndController::class, 'method' => 'allcode']);
     Route::get('/leavestatus', ['controller' => FrontEndController::class, 'method' => 'leavestatus']);

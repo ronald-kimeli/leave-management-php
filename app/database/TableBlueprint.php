@@ -53,6 +53,12 @@ class TableBlueprint
         return $this;
     }
 
+    public function datetime($columnName)
+    {
+        $this->columns[$columnName] = 'DATETIME';
+        return $this;
+    }
+
     public function timestamps()
     {
         $this->columns['created_at'] = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP";

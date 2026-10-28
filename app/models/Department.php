@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use app\models\BaseModel;
+use app\support\BaseModel;
 
 class Department extends BaseModel {
     protected $tableName = 'departments';

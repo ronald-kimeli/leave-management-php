@@ -1,3 +1,4 @@
+<?php /** @var object|null $data View data supplied by the controller. */ ?>
 <div class="container-fluid px-4">
   <h4 class="mt-4">Employee</h4>
   <ol class="breadcrumb mb-4">
@@ -113,4 +114,4 @@
     </div>
   </div>
 </div>
-<?php require __DIR__ . "/../components/footer.php"; ?>
+<?php require __DIR__ . "/../../layouts/dashboard/footer.php"; ?>

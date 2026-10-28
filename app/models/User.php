@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\support\BaseModel;
+
 class User extends BaseModel
 {
     protected $tableName = 'users';

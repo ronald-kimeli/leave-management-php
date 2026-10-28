@@ -4,6 +4,9 @@ namespace app\Middleware;
 
 class SessionAuthMiddleware
 {
+    /** Seconds of inactivity after which a signed-in user is logged out (also read by public/assets/js/autologout.js). */
+    public const IDLE_TIMEOUT = 15 * 60;
+
     // Constructor to start the session if it is not already started
     public function __construct()
     {
@@ -33,18 +36,18 @@ class SessionAuthMiddleware
             }
         }
 
-        // Define session timeout duration (in seconds)
-        $timeout_duration =  30 * 60; 
-        if (isset($_SESSION['session_start_time'])) {
-            $elapsed_time = time() - $_SESSION['session_start_time'];
-            if ($elapsed_time > $timeout_duration) {
+        // Idle timeout: any authenticated request pushes the deadline forward.
+        if (isset($_SESSION['auth'])) {
+            $lastActivity = $_SESSION['last_activity'] ?? $_SESSION['session_start_time'] ?? time();
+            if (time() - $lastActivity > self::IDLE_TIMEOUT) {
                 $this->destroySession();
-                $_SESSION['session_expired'] = true;
+                session_start();
                 $_SESSION['message'] = "Session expired! Please log in again.";
                 $_SESSION['message_code'] = 'error';
                 header("Location: /login", true, 302);
                 exit();
             }
+            $_SESSION['last_activity'] = time();
         }
 
         return true;

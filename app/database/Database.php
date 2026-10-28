@@ -67,7 +67,7 @@ class Database {
             echo "Database connection error. Please check the logs for more details.\n";
         }
         // Optionally redirect to a custom error page
-        require_once __DIR__ . "/../../errors/dberror.php";
+        require_once __DIR__ . "/../../logs/dberror.php";
         die();
     }
 

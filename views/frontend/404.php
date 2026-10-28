@@ -1,10 +1,8 @@
 <?php
 
-
-
 //  Message template
 require __DIR__ ."/messages/message.php";
 
 // Login Body
-require __DIR__ .'/includes/404.php';
+require __DIR__ .'/../components/404.php';
 

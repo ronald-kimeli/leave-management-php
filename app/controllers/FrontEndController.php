@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\models\User;
 use app\Responses\View;
 use app\models\Department;
-use app\controllers\Controller;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -40,9 +39,7 @@ class FrontEndController extends Controller
         }
 
         // Check if the reset token is valid and not expired
-        $user = User::model()->where(['reset_token' => $reset_token])
-            ->where(['reset_token_expiration', '>', date('Y-m-d H:i:s')])
-            ->one();
+        $user = $this->findUserByResetToken($reset_token);
 
         if ($user) {
             // Token is valid, show the reset password form
@@ -100,34 +97,32 @@ class FrontEndController extends Controller
     public function processPasswordReset($request)
     {
         if (isset($request['reset_password'])) {
-            $reset_token = $this->parseInput($request['code']);
-            $new_password = $this->parseInput($request['new_password']);
-            $confirm_password = $this->parseInput($request['confirm_password']);
+            $reset_token = $this->parseInput($request['code'] ?? '');
+            $new_password = $request['new_password'] ?? '';
+            $confirm_password = $request['confirm_password'] ?? '';
+
+            if (strlen($new_password) < 8) {
+                return View::redirect("/reset_password?code={$reset_token}", "Password must be at least 8 characters.", "error", 302);
+            }
 
             if ($new_password === $confirm_password) {
-                $new_password_hash = password_hash($new_password, PASSWORD_BCRYPT);
-
                 // Check if the reset token is valid and not expired
-                $user = User::model()->where(['reset_token' => $reset_token])
-                    ->where(['reset_token_expiration', '>', date('Y-m-d H:i:s')])
-                    ->one();
+                $user = $this->findUserByResetToken($reset_token);
 
                 if ($user) {
-                    // Update the user's password and reset token fields
-                    $user->password = $new_password_hash;
+                    // Update the user's password (the model hashes it) and clear the reset token
+                    $user->password = $new_password;
                     $user->reset_token = null;
                     $user->reset_token_expiration = null;
 
-                    $response = $user->save();
-
-                    if ($response['status'] === 'success') {
+                    if ($user->update()) {
                         $_SESSION['message'] = "Password reset successfully.";
                         $_SESSION['message_code'] = "success";
                         return View::redirect('/login', "Password reset successfully. You can now log in.", "success", 302);
                     } else {
                         $_SESSION['message'] = "Failed to reset password. Please try again.";
                         $_SESSION['message_code'] = "error";
-                        return View::redirect('/reset_password?code={$reset_token}', "Failed to reset password. Please try again.", "error", 302);
+                        return View::redirect("/reset_password?code={$reset_token}", "Failed to reset password. Please try again.", "error", 302);
                     }
                 } else {
                     $_SESSION['message'] = "Invalid or expired reset token.";
@@ -137,7 +132,7 @@ class FrontEndController extends Controller
             } else {
                 $_SESSION['message'] = "Password and confirm password do not match.";
                 $_SESSION['message_code'] = "error";
-                return View::redirect('/reset_password?code={$reset_token}', "Password and confirm password do not match.", "error", 302);
+                return View::redirect("/reset_password?code={$reset_token}", "Password and confirm password do not match.", "error", 302);
             }
         }
     }
@@ -219,6 +214,7 @@ class FrontEndController extends Controller
                         ];
                         
                         $_SESSION['session_start_time'] = time();
+                        $_SESSION['last_activity'] = time();
 
                         // lets redirect to Admin or normal user
                         if ($_SESSION['auth_role'] == "admin") // admin
@@ -276,7 +272,7 @@ class FrontEndController extends Controller
                             <h5> Ensure to reset password before the link expire</h5>
                             <br/><br/>
                             
-                            <a href='http://localhost:8000/reset_password?code=$code'>Click me</a>
+                            <a href='{$this->baseUrl()}/reset_password?code=$code'>Click me</a>
                             ";
 
             $mail->Body = $mail_template;
@@ -358,7 +354,7 @@ class FrontEndController extends Controller
                 <div class='container'>
                     <h2>Welcome to Leave Management System!</h2>
                     <h5>Thank you for registering. Please verify your email address by clicking the link below:</h5>
-                    <a href='http://localhost:8000/verify_email?token=$verify_token'>Verify Your Email</a>
+                    <a href='{$this->baseUrl()}/verify_email?token=$verify_token'>Verify Your Email</a>
                 </div>
             </body>
             </html>
@@ -392,6 +388,30 @@ class FrontEndController extends Controller
         } else {
             return View::redirect('/login', "Not allowed", "error", 302);
         }
+    }
+
+    private function findUserByResetToken($token)
+    {
+        if ($token === '') {
+            return null;
+        }
+
+        $user = User::model()->where(['reset_token' => $token])->get()[0] ?? null;
+
+        // Read through __get: empty()/isset() on model attributes would call the missing __isset
+        $expiresAt = $user ? $user->reset_token_expiration : null;
+
+        if (!$expiresAt || strtotime($expiresAt) < time()) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    private function baseUrl()
+    {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' ? 'https' : 'http';
+        return $scheme . '://' . $_SERVER['HTTP_HOST'];
     }
 
     private function parseInput($data)

@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use app\models\BaseModel;
+use app\support\BaseModel;
 
 class Role extends BaseModel
 {

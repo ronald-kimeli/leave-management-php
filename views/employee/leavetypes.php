@@ -54,8 +54,8 @@
 </div>
 
 <!-- Include jQuery and any necessary libraries -->
-<script src="/views/assets/frontend/js/jquery.min.js"></script>
-<script src="/views/assets/js/PaginationTable.js"></script>
+<script src="/assets/frontend/js/jquery.min.js"></script>
+<script src="/assets/js/PaginationTable.js"></script>
 
 <script>
     PaginationTable.init('/employee/leavetypes/index', [
