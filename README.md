@@ -4,49 +4,6 @@ Leave requests without spreadsheets or email chains. Employees apply and follow 
 
 Plain PHP 8.5 (OOP, MVC), MySQL/MariaDB through PDO, jQuery and Bootstrap. No framework to learn.
 
-## Screenshots
-
-#### Database Design
-<img width="100%" alt="Database Design" src="public/images/database_design.webp">
-
-#### Home Page
-<img width="100%" alt="Home Page" src="public/images/home.webp">
-
-#### Login
-<img width="100%" alt="Login" src="public/images/login.webp">
-
-#### Admin Applied Leaves
-<img width="100%" alt="Leaves" src="public/images/applied_admin.webp">
-
-#### Employee Applied Leaves
-<img width="100%" alt="Leaves" src="public/images/employee_apply_leave.webp">
-
-#### Mobile Responsive
-<img width="100%" alt="Leaves" src="public/images/mobile_responsive.webp">
-
-## Features
-
-**Public site**
-- Landing page with an about section and the leave policy highlights.
-- Registration with email verification, login, and password reset by email.
-
-**Employees**
-- Apply for leave: choose a leave type and dates, add a description.
-- Follow each request as pending, accepted or rejected.
-- Bell notification showing how many of their requests have been decided.
-- See their department and every leave type with its description.
-- Edit their profile.
-
-**Administrators**
-- Create, edit and delete employees, departments and leave types.
-- Review each request and accept or reject it, with remaining days recorded.
-- Bell notification showing how many requests are waiting for a decision.
-- Dashboard with organisation-wide totals.
-
-**Dark mode and auto-logout.** A toggle in the top bar switches between light and dark (remembered per browser), both driven by `public/assets/css/theme.css`. After 15 minutes of inactivity users get a warning and are then logged out (`SessionAuthMiddleware::IDLE_TIMEOUT`).
-
-**One design, two roles.** Admins and employees share the same dashboard layout. The sidebar menu is built from the signed-in role, and each panel is closed to the other role: an employee who opens an admin URL is sent back to their own dashboard (and the other way round).
-
 ## Requirements
 
 You need all of the following before installing.
@@ -120,6 +77,58 @@ Composer libraries (installed for you): `phpmailer/phpmailer` ^6.6 and `fakerphp
 
    Open <http://localhost:8088>. For a real server, see below.
 
+## Features
+
+**Public site**
+- Landing page with an about section and the leave policy highlights.
+- Registration with email verification, login, and password reset by email.
+
+**Employees**
+- Apply for leave: choose a leave type and dates, add a description.
+- Follow each request as pending, accepted or rejected.
+- Bell notification showing how many of their requests have been decided.
+- See their department and every leave type with its description.
+- Edit their profile.
+
+**Administrators**
+- Create, edit and delete employees, departments and leave types.
+- Review each request and accept or reject it, with remaining days recorded.
+- Bell notification showing how many requests are waiting for a decision.
+- Dashboard with organisation-wide totals.
+
+**Dark mode and auto-logout.** A toggle in the top bar switches between light and dark (remembered per browser), both driven by `public/assets/css/theme.css`. After 15 minutes of inactivity users get a warning and are then logged out (`SessionAuthMiddleware::IDLE_TIMEOUT`).
+
+**One design, two roles.** Admins and employees share the same dashboard layout. The sidebar menu is built from the signed-in role, and each panel is closed to the other role: an employee who opens an admin URL is sent back to their own dashboard (and the other way round).
+
+## Demo accounts
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@gmail.com` | `password123` |
+| Employee | `employee@gmail.com` | `password123` |
+
+Change or delete these before the app is reachable by anyone else.
+
+## UI | UX
+
+#### Database Design
+<img width="100%" alt="Database Design" src="public/images/database_design.webp">
+
+#### Home Page
+<img width="100%" alt="Home Page" src="public/images/home.webp">
+
+#### Login
+<img width="100%" alt="Login" src="public/images/login.webp">
+
+#### Admin Applied Leaves
+<img width="100%" alt="Leaves" src="public/images/applied_admin.webp">
+
+#### Employee Applied Leaves
+<img width="100%" alt="Leaves" src="public/images/employee_apply_leave.webp">
+
+#### Mobile Responsive
+<img width="100%" alt="Leaves" src="public/images/mobile_responsive.webp">
+
 ## Web server setup
 
 **nginx + PHP-FPM**
@@ -147,15 +156,6 @@ server {
 **Apache**: set `DocumentRoot` to `public/` and enable `mod_rewrite`. The bundled `public/.htaccess` sends every non-file request to `index.php`, redirects HTTP to HTTPS, and sets the Nairobi time zone.
 
 **Anything else**: keep `app/`, `src/`, `views/`, `vendor/`, `logs/` and `bin/` outside the web root or unreachable. Only `public/` should be exposed.
-
-## Demo accounts
-
-| Role | Email | Password |
-|---|---|---|
-| Admin | `admin@gmail.com` | `password123` |
-| Employee | `employee@gmail.com` | `password123` |
-
-Change or delete these before the app is reachable by anyone else.
 
 ## How it works
 
@@ -216,4 +216,3 @@ Make new columns `->nullable()` or give them a `->default(...)`, since the table
 | Page loads without styles | Assets are served from `/assets/`; make sure the server does not rewrite static files to PHP. |
 | No verification or reset email | Fill in `src/smtp.php` and check that your host allows outbound SMTP. |
 | Wrong dates or times | Set `date.timezone` in your PHP config (the Apache `.htaccess` uses `Africa/Nairobi`). |
-
