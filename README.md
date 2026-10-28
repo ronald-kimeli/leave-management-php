@@ -4,8 +4,27 @@ Leave requests without spreadsheets or email chains. Employees apply and follow 
 
 Plain PHP 8.5 (OOP, MVC), MySQL/MariaDB through PDO, jQuery and Bootstrap. No framework to learn.
 
-<details>
-<summary><h2>Features</h2></summary>
+## Screenshots
+
+#### Database Design
+<img width="100%" alt="Database Design" src="public/images/database_design.webp">
+
+#### Home Page
+<img width="100%" alt="Home Page" src="public/images/home.webp">
+
+#### Login
+<img width="100%" alt="Login" src="public/images/login.webp">
+
+#### Admin Applied Leaves
+<img width="100%" alt="Leaves" src="public/images/applied_admin.webp">
+
+#### Employee Applied Leaves
+<img width="100%" alt="Leaves" src="public/images/employee_apply_leave.webp">
+
+#### Mobile Responsive
+<img width="100%" alt="Leaves" src="public/images/mobile_responsive.webp">
+
+## Features
 
 **Public site**
 - Landing page with an about section and the leave policy highlights.
@@ -24,12 +43,11 @@ Plain PHP 8.5 (OOP, MVC), MySQL/MariaDB through PDO, jQuery and Bootstrap. No fr
 - Bell notification showing how many requests are waiting for a decision.
 - Dashboard with organisation-wide totals.
 
+**Dark mode and auto-logout.** A toggle in the top bar switches between light and dark (remembered per browser), both driven by `public/assets/css/theme.css`. After 15 minutes of inactivity users get a warning and are then logged out (`SessionAuthMiddleware::IDLE_TIMEOUT`).
+
 **One design, two roles.** Admins and employees share the same dashboard layout. The sidebar menu is built from the signed-in role, and each panel is closed to the other role: an employee who opens an admin URL is sent back to their own dashboard (and the other way round).
 
-</details>
-
-<details>
-<summary><h2>Requirements</h2></summary>
+## Requirements
 
 You need all of the following before installing.
 
@@ -54,10 +72,7 @@ mysql --version                           # or: mariadb --version
 
 Composer libraries (installed for you): `phpmailer/phpmailer` ^6.6 and `fakerphp/faker` ^1.23. Faker is only used to generate demo data.
 
-</details>
-
-<details>
-<summary><h2>Installation</h2></summary>
+## Installation
 
 1. **Get the code and install dependencies**
 
@@ -105,10 +120,7 @@ Composer libraries (installed for you): `phpmailer/phpmailer` ^6.6 and `fakerphp
 
    Open <http://localhost:8088>. For a real server, see below.
 
-</details>
-
-<details>
-<summary><h2>Web server setup</h2></summary>
+## Web server setup
 
 **nginx + PHP-FPM**
 
@@ -136,10 +148,7 @@ server {
 
 **Anything else**: keep `app/`, `src/`, `views/`, `vendor/`, `logs/` and `bin/` outside the web root or unreachable. Only `public/` should be exposed.
 
-</details>
-
-<details>
-<summary><h2>Demo accounts</h2></summary>
+## Demo accounts
 
 | Role | Email | Password |
 |---|---|---|
@@ -148,41 +157,33 @@ server {
 
 Change or delete these before the app is reachable by anyone else.
 
-</details>
-
-<details>
-<summary><h2>How it works</h2></summary>
+## How it works
 
 - **Front controller.** Every request passes through `index.php` in the project root (`public/index.php` just loads it for virtual hosts), where routes are declared (`Route::get`, `post`, `put`, `delete`). Routes under the session group go through `SessionAuthMiddleware`.
-- **MVC.** Controllers in `app/controllers` return a `View::render('admin.employees.index', ...)` result. Models in `app/models` extend a small query-builder `BaseModel` over PDO.
+- **MVC.** Controllers in `app/controllers` return a `View::render('admin.employees.index', ...)` result. Models in `app/models` extend a small query-builder `BaseModel` (in `app/support`) over PDO. A controller can also return `View::json([...])` or a plain array, and any page returns JSON for a request with `Accept: application/json`.
 - **Layouts.** The public site uses `views/frontend`. Admin and employee pages are wrapped by the one layout in `views/layouts/dashboard`, which also does the role check and builds the menu from `menu.php`.
 - **Database tooling.** `bin/migrate.php` builds tables from blueprints in `app/database`; `bin/seed.php` fills them.
 - **Leave statuses.** `pending` until an admin sets it to `accepted` or `rejected`.
 
-</details>
-
-<details>
-<summary><h2>Project layout</h2></summary>
+## Project layout
 
 ```
 index.php            Front controller and route table
 public/              Static files and the virtual-host entry: .htaccess, assets/, images/
 app/
-  controllers/       FrontEnd, admin/ and employee/ controllers
-  models/            Route, BaseModel, User, Role, Department, LeaveType, AppliedLeave
+  controllers/       Controller base, FrontEnd, Session, admin/ and employee/ controllers
+  models/            User, Role, Department, LeaveType, AppliedLeave
+  support/           Route and BaseModel (router and query builder)
   database/          PDO wrapper, migrations, blueprints, seeder
   Middleware/        Session authentication
-  Responses/         View rendering and redirects
-views/               Page templates and layouts
+  Responses/         View rendering, JSON responses and redirects
+views/               Page templates; layouts/ (dashboard shell) and components/ (public site parts)
 bin/                 migrate.php, seed.php (command line only)
 src/                 Your local config: database.php, smtp.php
 logs/                Runtime logs and the database-error page
 ```
 
-</details>
-
-<details>
-<summary><h2>Know how</h2></summary>
+## Know how
 
 **Add a column to an existing table.** Append an entry with a newer timestamp id to the `$migrations` array in `bin/migrate.php`, then run `php bin/migrate.php`. Never edit an entry that has already run.
 
@@ -199,19 +200,13 @@ logs/                Runtime logs and the database-error page
 
 Make new columns `->nullable()` or give them a `->default(...)`, since the table may already hold rows.
 
-</details>
-
-<details>
-<summary><h2>Security notes</h2></summary>
+## Security notes
 
 - `src/database.php` and `src/smtp.php` hold credentials. Keep them out of version control (they are listed in `.gitignore`).
 - Serve over HTTPS. Sessions and passwords travel in the clear otherwise.
 - Seeded accounts all use `password123`.
 
-</details>
-
-<details>
-<summary><h2>Troubleshooting</h2></summary>
+## Troubleshooting
 
 | Symptom | Fix |
 |---|---|
@@ -222,27 +217,3 @@ Make new columns `->nullable()` or give them a `->default(...)`, since the table
 | No verification or reset email | Fill in `src/smtp.php` and check that your host allows outbound SMTP. |
 | Wrong dates or times | Set `date.timezone` in your PHP config (the Apache `.htaccess` uses `Africa/Nairobi`). |
 
-</details>
-
-<details>
-<summary><h2>Screenshots</h2></summary>
-
-#### Database Design
-<img width="100%" alt="Database Design" src="public/images/database_design.webp">
-
-#### Home Page
-<img width="100%" alt="Home Page" src="public/images/home.webp">
-
-#### Login
-<img width="100%" alt="Login" src="public/images/login.webp">
-
-#### Admin Applied Leaves
-<img width="100%" alt="Leaves" src="public/images/applied_admin.webp">
-
-#### Employee Applied Leaves
-<img width="100%" alt="Leaves" src="public/images/employee_apply_leave.webp">
-
-#### Mobile Responsive
-<img width="100%" alt="Leaves" src="public/images/mobile_responsive.webp">
-
-</details>
